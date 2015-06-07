@@ -37,4 +37,3 @@ Run `npm run deploy` and the output files will be written to the `lib` directory
 
 ####NOTES:
 * Make changes ONLY to the ES6 `js` file in the `src`, not to `js` in `lib`. The lib is compiled down to run in modern browsers by `testem`.
-* Don't have a compatible set of browsers or want to test against something else? Change the browsers tested against in `testem.json`

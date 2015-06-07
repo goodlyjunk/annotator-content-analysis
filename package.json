@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "description": "A custom editor plugin for annotator",
   "repository": {
-  "type": "git",
-  "url": "git@github.com:Goodly/annotator-custom-editor.git"
+    "type": "git",
+    "url": "git@github.com:Goodly/annotator-custom-editor.git"
   },
   "scripts": {
     "test": "testem",
-    "deploy": "babel src --out-dir lib --source-maps inline"
+    "deploy": "babel src --out-dir lib --source-maps inline; node-sass style/annotator-content-analysis.scss --output lib"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "babel": "^5.1.10"
+    "babel": "^5.1.10",
+    "node-sass": "^3.2.0"
   }
 }
