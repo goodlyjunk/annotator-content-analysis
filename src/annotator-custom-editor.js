@@ -7,16 +7,19 @@ function annotatorCustomEditor(options){
 
     // ajax get to retrieve data
     getDataPayload: function(){
-      $.get(this.options.endpoint, (data) => {
-        this.configureData(data);
-      })
+      if (typeof this.options.data !== "object") {
+        $.get(this.options.data, (data) => {
+          this.setData(data);
+        })
+      } else {
+        this.setData(this.options.data);
+      }
     },
 
-    // method to model our raw data payload
+    // method to cast our data payload into module's context
     // @param value [object] API payload returned via AJAX
     //
-    configureData: function(value){
-      // TODO: establish how we want to configure the data
+    setData: function(value){
       this.data = {
         next: value.next,
         previous: value.previous,
@@ -24,21 +27,11 @@ function annotatorCustomEditor(options){
       }
     },
 
-    // hooks into Annotator lifecycle events
-    //
-    // TODOS:
-    //  • how to create our own UI
-    //  • how best to store our answers to interact with other plugins
-    //  • how to pause the annotator lifecycle?
-    beforeAnnotationCreated: function(annotation){
-      return this.promiseHelper(annotation)
-        .then((value) => {
-          this.setUpCustomEditorPanel(value);
-        });
-    },
-
+    // this is where the DOM fun begins...
+    // TODO: create DOM template function to pipe in our question tree
     setUpCustomEditorPanel: function(annotation) {
-      console.log(annotation);
+      // we will eventually return the annotation after our question tree logic has been navigated
+      return annotation
     },
 
     // helper promise function for intercepting Annotator UI
@@ -46,9 +39,23 @@ function annotatorCustomEditor(options){
     promiseHelper: function(annotation) {
       return new Promise((resolve, reject) => {
         let value = annotation
-        resolve(value);
+        resolve(value); // we won't want to resolve this right away, but instead perhaps pipe a callback to run first then resolve
       })
-    }
+    },
+
+    // ANNOTATOR LIFECYCLE EVENTS
+    //
+    beforeAnnotationCreated: function(annotation){
+      return this.promiseHelper(annotation)
+        .then((value) => {
+          this.setUpCustomEditorPanel(value);
+        });
+    },
+
+
+    annotationCreated: function(annotation) {
+      return annotation
+   }
 
   }
 }
