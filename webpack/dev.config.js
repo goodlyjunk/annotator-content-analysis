@@ -84,7 +84,12 @@ export default {
         },
         {
           test: /\.js$|.jsx$/,
-          include: /app/,
+          include: [
+            /app/,
+            path.join(__dirname, '../node_modules/dom-anchor-text-position'),
+            path.join(__dirname, '../node_modules/dom-seek'),
+            path.join(__dirname, '../node_modules/node-iterator-shim')
+          ],
           loaders: ['react-hot', 'babel']
         }
       ]

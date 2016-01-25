@@ -58,3 +58,14 @@ body {
     }
   }
 }
+
+.article {
+  .text-span {
+
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+  }
+}

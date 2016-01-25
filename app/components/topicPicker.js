@@ -1,6 +1,7 @@
 import React from 'react';
-import jquery from 'jquery';
+import $ from 'jquery';
 import AppStore from 'store/appStore';
+import AppActions from 'actions/appActions';
 
 import 'topicpicker.scss';
 
@@ -28,8 +29,6 @@ export default React.createClass({
   componentDidMount() {
     // TODO: once everything is react-ified we shouldn't need jquery
     // though this is arguably much less boilerplate code than react
-    var $ = jquery;
-
     function deleteMeSomeday() {
       function collapse(elem) {
         $(elem).parent().children().toggle();
@@ -55,6 +54,8 @@ export default React.createClass({
         }).click();
         $('.topic-picker__nav li').click(function() {
           activateTopic($(this).attr('data-topic'));
+          AppActions.changeTopic($(this).attr('data-topic'))
+
         });
 
         activateTopic('1');
