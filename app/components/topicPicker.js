@@ -9,7 +9,8 @@ export default React.createClass({
   displayName: 'TopicPicker',
 
   propTypes: {
-    topics: React.PropTypes.array.isRequired
+    topics: React.PropTypes.array.isRequired,
+    topicsTmp: React.PropTypes.array.isRequired
   },
 
   childContextTypes: {
@@ -24,6 +25,25 @@ export default React.createClass({
 
   getInitialState() {
     return AppStore.getState();
+  },
+
+  getDefaultProps() {
+    return {
+      // TODO: we're getting topics in props, but it's structure looks outdated
+      // in any case it needs to be removed or refactored as topic data
+      // should filter down
+      topicsTmp: [
+        { id: '1', name: 'Topic 1',
+          description: `
+          Topic 1 is cottage cheese mascarpone croque monsieur hard cheese. Ricotta.
+
+          Cow monterey jack taleggio. Cream cheese say cheese cheese triangles cut the cheese when the cheese comes out everybody is happy parmesan cheesecake say cheese. Boursin cut the cheese jarlsberg goat pecorino everyone loves cheesy feet stinking bishop.
+        ` },
+        { id: '2', name: 'Topic 2', description: 'Topic 2 is placeholder' },
+        { id: '3', name: 'Topic 3', description: '' },
+        { id: '4', name: 'Topic 4', description: '' }
+      ]
+    };
   },
 
   componentDidMount() {
@@ -60,32 +80,34 @@ export default React.createClass({
     // TODO: break this into its component pieces
     // const {topicId}: string = this.context.router.getCurrentParams();
 
+    console.log(this.props);
+
     return (
       <div className='topic-picker topic-picker--left'>
         <ul className='topic-picker__nav'>
-          <li data-topic='1'><b>Topic 1</b></li>
-          <li data-topic='2'><b>Topic 2</b></li>
-          <li data-topic='3'><b>Topic 3</b></li>
-          <li data-topic='4'><b>Topic 4</b></li>
+          { this.props.topicsTmp.map(topic => {
+            return (
+              <li data-topic={topic.id}
+                  style={{height: 100 / this.props.topicsTmp.length + '%'}}>
+                <b>{topic.name}</b>
+              </li>
+            );
+          })}
         </ul>
         <div className='topic-picker__wrapper'>
           <div className='topic-picker__pin-button'>
             <i className='fa fa-thumb-tack fa-lg'></i>
           </div>
-          <div className='topic-wrapper' data-topic='1'>
-            <div className='topic-wrapper__topic'>
-              Topic 1 is cottage cheese mascarpone croque monsieur hard cheese. Ricotta.<br/>
-              <br/>
-              Cow monterey jack taleggio. Cream cheese say cheese cheese triangles cut the cheese when the cheese comes out everybody is happy parmesan cheesecake say cheese. Boursin cut the cheese jarlsberg goat pecorino everyone loves cheesy feet stinking bishop.
-              <CollapsibleList />
-            </div>
-          </div>
-          <div className='topic-wrapper' data-topic='2'>
-            <div className='topic-wrapper__topic'>
-              Topic 2 is Bacon ipsum dolor amet tail fatback pancetta bresaola chicken. Sausage alcatra frankfurter, corned beef fatback ball tip ground round. Tri-tip pork loin cow spare ribs andouille, short ribs pork chop ham hamburger sirloin beef ribs brisket drumstick flank tenderloin. Pork loin chicken beef ribs, andouille salami frankfurter short ribs beef leberkas bacon. Pastrami turducken prosciutto spare ribs, beef tail cupim t-bone biltong doner picanha bresaola salami. Strip steak brisket ball tip tri-tip rump ground<br/>
-              <CollapsibleList />
-            </div>
-          </div>
+          { this.props.topicsTmp.map(topic => {
+            return (
+              <div className='topic-wrapper' data-topic={topic.id}>
+                <div className='topic-wrapper__topic'>
+                  { topic.description }
+                  <CollapsibleList />
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
