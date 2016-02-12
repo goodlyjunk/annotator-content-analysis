@@ -1,9 +1,9 @@
 import React from 'react';
 import jquery from 'jquery';
 import AppStore from 'store/appStore';
-import CollapsibleList from './collapsibleList.js';
+import CollapsibleList from 'components/CollapsibleList';
 
-import 'topicpicker.scss';
+import 'TopicPicker.scss';
 
 export default React.createClass({
   displayName: 'TopicPicker',
@@ -79,8 +79,6 @@ export default React.createClass({
   render() {
     // TODO: break this into its component pieces
     // const {topicId}: string = this.context.router.getCurrentParams();
-
-    console.log(this.props);
 
     return (
       <div className='topic-picker topic-picker--left'>
