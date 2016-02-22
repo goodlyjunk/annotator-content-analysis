@@ -1,15 +1,9 @@
-import alt from 'utils/alt';
+// Redux is reducer centric - this is marked for deletion
+
+import { createStore } from 'redux';
 import AppActions from 'actions/appActions';
+import reducerExample from 'reducers/reducerExample'
 import data from 'assets/tua.json';
 
-// #TODO: we will eventually need to move off mock data.
-// what is API structure? workflow? how are we fetching one TUA after the other?
-
-class AppStore {
-  constructor() {
-    this.bindActions(AppActions);
-    this.tua = data.results;
-  }
-}
-
-export default alt.createStore(AppStore, 'AppStore');
+let store = createStore(reducerExample);
+export default store;
