@@ -47,6 +47,7 @@
     "jscs": "^2.9.0",
     "jscs-loader": "0.2.0",
     "json-loader": "^0.5.1",
+    "lodash": "^4.5.0",
     "mocha": "^2.4.5",
     "node-sass": "^3.0.0-beta.7",
     "object-assign": "^4.0.1",
@@ -57,9 +58,10 @@
     "react-hot-loader": "^1.2.5",
     "react-redux": "^4.2.1",
     "react-router": "^2.0.0-rc5",
+    "react-router-redux": "^3.0.0",
     "react-tools": "^0.13.1",
     "redux": "^3.2.1",
-    "redux-devtools": "^3.1.0",
+    "redux-devtools": "^3.1.1",
     "sass-loader": "^3.1.2",
     "script-loader": "^0.6.1",
     "style-loader": "^0.13.0",
@@ -70,6 +72,8 @@
   "dependencies": {
     "dom-anchor-text-position": "^2.0.1",
     "immutable": "^3.7.6",
-    "jquery": "^2.2.0"
+    "jquery": "^2.2.0",
+    "react-redux": "^4.4.0",
+    "redux": "^3.3.1"
   }
 }

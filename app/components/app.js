@@ -1,5 +1,6 @@
 import React from 'react';
-import AppStore from 'store/appStore';
+import { Provider } from 'react-redux';
+// import AppStore from 'store/appStore';
 
 export default React.createClass({
   displayName: 'App',
@@ -8,17 +9,17 @@ export default React.createClass({
     children: React.PropTypes.object.isRequired
   },
 
-  getInitialState() {
-    return AppStore.getState();
-  },
+  // getInitialState() {
+  //   return AppStore.getState();
+  // },
 
-  componentDidMount() {
-    AppStore.listen(this.onChange);
-  },
-
-  onChange() {
-    this.setState(this.getInitialState());
-  },
+  // componentDidMount() {
+  //   AppStore.listen(this.onChange);
+  // },
+  //
+  // onChange() {
+  //   this.setState(this.getInitialState());
+  // },
 
   render() {
     return (
