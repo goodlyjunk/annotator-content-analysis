@@ -35,6 +35,21 @@ const Article = React.createClass({
       // does this kind of data munging belong in a reducer?
       let selectedText = selectionObj.toString();
       let start = selectionObj.anchorOffset;
+      if (this.articleRef.childNodes.length > 1) {
+        // since we're splitting <Article> into <span>s we'll need to find which <span>
+        // anchorOffset is referring to, and find that offset from the start of <Article>
+        for (var i in this.articleRef.childNodes) {
+          var childNode = this.articleRef.childNodes[i];
+          if (childNode === selectionObj.anchorNode.parentNode) {
+            break;
+          } else {
+            // console.dir(childNode);
+            // console.dir(selectionObj.anchorNode);
+            start += childNode.textContent.length;
+          }
+        }
+      }
+      console.log(this.articleRef.childNodes.length, selectionObj);
       // let start = this.articleRef.textContent.indexOf(selectedText);
       let end = start + selectedText.length;
       if (!(start === end && start === 0)) {
@@ -68,16 +83,16 @@ const Article = React.createClass({
           Focus on the bold text about '{topic.name}' and answer the questions.
         </div>
         <div ref={(ref) => this.articleRef = ref} className='article' onClick={this.handleClick}>
-          {highlights.map((n) => {
-            // I'd rather not have to wrap these like this... is there a better way?
-            var markup = (
-              <span>
-                <span>{text.substring(start, n.start)}</span>
-                <span className='highlighted'>{text.substring(n.start, n.end)}</span>
-              </span>
-            );
-            start = n.end;
-            return markup;
+          {Array(highlights.length * 2).fill().map((_,i) => {
+            var curHL = highlights[i / 2 | 0];
+            if (i % 2 === 0) {
+              // render normal text
+              return (<span>{text.substring(start, curHL.start)}</span>);
+            } else {
+              // render highlight
+              start = curHL.end;
+              return (<span className='highlighted'>{text.substring(curHL.start, curHL.end)}</span>);
+            }
           })}
           { tail }
         </div>
