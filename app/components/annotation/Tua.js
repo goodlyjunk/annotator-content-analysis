@@ -3,7 +3,7 @@ import Article from 'components/annotation/article';
 import Topics from 'components/annotation/topics';
 import TopicPicker from 'components/annotation/topicPicker';
 import ReactCSSTransitionsGroup from 'react-addons-css-transition-group';
-import 'Fadein.scss';
+import 'fadeIn.scss';
 
 import AppStore from 'store/appStore';
 
@@ -36,13 +36,13 @@ export default React.createClass({
 
     return (
       <ReactCSSTransitionsGroup transitionName='fadein' transitionAppear>
-      <div className='tua'>
-        <div className='text-wrapper'>
-          <Article topics={topics} article={article}/>
+        <div className='tua'>
+          <div className='text-wrapper'>
+            <Article topics={topics} article={article}/>
+          </div>
+          <Topics topics={topics}/>
+          <TopicPicker topics={topics}/>
         </div>
-        <Topics topics={topics}/>
-        <TopicPicker topics={topics}/>
-      </div>
       </ReactCSSTransitionsGroup>
     );
   }
