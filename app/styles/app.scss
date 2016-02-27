@@ -43,6 +43,10 @@ body {
   .article {
     @include newspaper;
 
+    .highlighted {
+      background-color: $red_accent;
+    }
+
     /* react makes this not work */
     &[data-topic="1"]::selection {
       background: $red_accent;
