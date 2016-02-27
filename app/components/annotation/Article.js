@@ -1,8 +1,8 @@
 import React from 'react';
-import AppStore from 'store/appStore';
 import { ADD_HIGHLIGHT } from 'actions/actionTypes';
+import { connect } from 'react-redux';
 
-export default React.createClass({
+const Article = React.createClass({
   displayName: 'Article',
 
   contextTypes: {
@@ -11,19 +11,19 @@ export default React.createClass({
 
   propTypes: {
     article: React.PropTypes.object.isRequired,
-    topics: React.PropTypes.array.isRequired
+    topics: React.PropTypes.array.isRequired,
+    dispatch: React.PropTypes.function
   },
 
   handleClick: function() {
     var selectionObj = window.getSelection();
     if (selectionObj) {
-      console.log(selectionObj);
       // does this kind of data munging belong in a reducer?
       let selectedText = selectionObj.toString();
-      let start = domRoot.textContent.indexOf(selectedText);
+      let start = this.articleRef.textContent.indexOf(selectedText);
       let end = start + selectedText.length;
-      store.dispatch({ type: ADD_HIGHLIGHT,
-                       selection: { start, end, selectedText } });
+      this.props.dispatch({ type: ADD_HIGHLIGHT,
+                            selection: { start, end, selectedText } });
     }
   },
 
@@ -37,9 +37,11 @@ export default React.createClass({
         <div className='tua__header-text'>
           Focus on the bold text about '{topic.name}' and answer the questions.
         </div>
-        <div className='article'>{article.text}</div>
+        <div ref={(ref) => this.articleRef = ref} className='article' onClick={this.handleClick}>{article.text}</div>
       </div>
     );
   }
 
 });
+
+export default connect()(Article);

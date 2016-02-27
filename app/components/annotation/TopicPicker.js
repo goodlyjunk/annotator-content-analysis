@@ -1,6 +1,5 @@
 import React from 'react';
 import jquery from 'jquery';
-import AppStore from 'store/appStore';
 import CollapsibleList from 'components/CollapsibleList';
 
 import 'TopicPicker.scss';
@@ -23,9 +22,6 @@ export default React.createClass({
     };
   },
 
-  getInitialState() {
-    return AppStore.getState();
-  },
 
   getDefaultProps() {
     return {
