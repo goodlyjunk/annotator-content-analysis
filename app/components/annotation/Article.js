@@ -11,7 +11,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 const mapStateToProps = state => {
-  // is this hierarchy correct?
   return { highlights: state.articleReducers.highlights };
 }
 
@@ -32,7 +31,6 @@ const Article = React.createClass({
   handleClick: function() {
     var selectionObj = window.getSelection();
     if (selectionObj) {
-      // does this kind of data munging belong in a reducer?
       let selectedText = selectionObj.toString();
       let start = selectionObj.anchorOffset;
       if (this.articleRef.childNodes.length > 1) {
@@ -49,11 +47,8 @@ const Article = React.createClass({
           }
         }
       }
-      console.log(this.articleRef.childNodes.length, selectionObj);
-      // let start = this.articleRef.textContent.indexOf(selectedText);
       let end = start + selectedText.length;
       if (!(start === end && start === 0)) {
-        console.log(this);
         this.props.onHighlight(start, end, selectedText);
       }
     }

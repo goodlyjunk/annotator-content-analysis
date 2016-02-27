@@ -25,10 +25,6 @@ export default React.createClass({
     };
   },
 
-  // getInitialState() {
-  //   return AppStore.getState();
-  // },
-
   render() {
     return (
       <div>

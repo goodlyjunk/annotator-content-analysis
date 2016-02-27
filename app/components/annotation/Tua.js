@@ -23,7 +23,7 @@ export default React.createClass({
   },
 
   getInitialState() {
-    // hack this in for now
+    // TODO: receive this data as an action
     return { tua: data.results };
   },
 

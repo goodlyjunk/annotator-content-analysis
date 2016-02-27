@@ -44,6 +44,7 @@ body {
     @include newspaper;
 
     .highlighted {
+      // TODO: allow topic switching and don't just highlight one color
       background-color: $red_accent;
     }
 
