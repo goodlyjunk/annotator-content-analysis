@@ -1,6 +1,8 @@
 import React from 'react';
 import QuizQuestion from 'components/quiz/QuizQuestion.js';
 import 'Quiz.scss';
+import ReactCSSTransitionsGroup from 'react-addons-css-transition-group';
+import 'Fadein.scss';
 
 export default React.createClass({
   displayName: 'Quiz',
@@ -58,6 +60,7 @@ export default React.createClass({
   render() {
     var opts = this.state.answer.length !== 0 ? {} : {disabled: true};
     return (
+      <ReactCSSTransitionsGroup transitionName='fadein' transitionAppear>
       <div className='quiz'>
         {this.props.questions.map((question) => {
           return (
@@ -68,6 +71,7 @@ export default React.createClass({
         })}
         <button className='quiz__next' {...opts}>Next</button>
       </div>
+      </ReactCSSTransitionsGroup>
     );
   }
 
