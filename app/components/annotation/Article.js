@@ -41,8 +41,6 @@ const Article = React.createClass({
           if (childNode === selectionObj.anchorNode.parentNode) {
             break;
           } else {
-            // console.dir(childNode);
-            // console.dir(selectionObj.anchorNode);
             start += childNode.textContent.length;
           }
         }
@@ -56,7 +54,6 @@ const Article = React.createClass({
 
   render() {
     const {topic_id}: string = this.context.params
-    let article = this.props.article;
     let topic = this.props.topics[topic_id];
 
     var text = this.props.article.text;

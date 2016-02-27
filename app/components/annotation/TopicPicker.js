@@ -22,7 +22,6 @@ export default React.createClass({
     };
   },
 
-
   getDefaultProps() {
     return {
       // TODO: we're getting topics in props, but it's structure looks outdated

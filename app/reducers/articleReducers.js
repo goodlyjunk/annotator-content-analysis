@@ -1,17 +1,14 @@
-import { ADD_HIGHLIGHT, TEST_ACTION } from '../actions/actionTypes';
+import { ADD_HIGHLIGHT } from '../actions/actionTypes';
 
 // Note: not 100% sure this is the 'proper' reducer layout - we'll find out more
 // as we go
 
 const initialState = {
-  exampleProp: 'defaultValue',
   highlights: []
 }
 
 export default function articleReducer(state = initialState, action) {
   switch (action.type) {
-    case TEST_ACTION:
-      return Object.assign({}, state, { exampleProp: action.text });
     case ADD_HIGHLIGHT:
       // TODO: merge overlapping highlights
       var newHighlights = state.highlights.concat(
