@@ -37,12 +37,14 @@
 .prompt {
   position: relative;
   opacity: 0;
+  color: #fff;
   //top: 50px;
   left: 30%;
   margin-top: 25px;
   text-align: center;
-  transition: opacity 1s ease;
   &.active {
+    color: black;
+    transition: opacity 1s ease;
     opacity: 1;
   }
   
