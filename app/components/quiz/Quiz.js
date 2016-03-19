@@ -34,18 +34,42 @@ const Quiz = React.createClass({
     for (var i = 0; i < this.props.questions.length; i++) {
       questionFlags[this.props.questions[i].id] = false
     }
-    return {questionAnswerFlags: questionFlags};
+    //console.log(questionFlags);
+    return {questionAnswerFlags: questionFlags, answerText: ''};
   },
 
-  onUpdate: function(questionId, onAnswered) {
-    var questionFlags = this.state.questionAnswerFlags;
-    questionFlags[questionId] = onAnswered;
-    this.setState({questionAnswerFlags: questionFlags});
+  onUpdate: function(questionId, onAnswered, text=null) {
+    if (text === null) {
+      var questionFlags = this.state.questionAnswerFlags;
+      questionFlags[questionId] = onAnswered;
+      this.setState({questionAnswerFlags: questionFlags});
+    } else {
+      //console.log(text);
+      this.setState({answerText: text});
+      //need to store in state
+    }
+  },
+
+  textQuestionClickNext: function() {
+    if (this.props.questions.filter(obj => obj.type === 'text').length > 0) {
+      return this.state.answerText !== ''
+    }
+    return true;
   },
 
   canClickNext: function() {
     var f = this.state.questionAnswerFlags;
-    return !Object.keys(f).map(i => f[i]).includes(false);
+    // if (this.props.questions.length !== Object.keys(f).length) {
+    //   var questionFlags = {}
+    //   for (var i = 0; i < this.props.questions.length; i++) {
+    //     questionFlags[this.props.questions[i].id] = false
+    //   }
+    //   this.setState({questionAnswerFlags: questionFlags});
+    //   f = questionFlags;
+    // }
+    //console.log(!Object.keys(f).map(i => f[i]).includes(false));
+    return !Object.keys(f).map(i => f[i]).includes(false)
+           && this.textQuestionClickNext();
   },
 
   prompt: function() {
@@ -54,6 +78,8 @@ const Quiz = React.createClass({
   },
 
   handleNext: function() {
+    // on click, stuff in textbox should be saved
+    //console.log(this.state.answerText);
     this.props.onNewQuestions(tmpQuestions.questions);
   },
 

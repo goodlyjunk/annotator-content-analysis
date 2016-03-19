@@ -70,6 +70,21 @@
         }
       ],
       "type": "radio"
+    },
+    {
+      "id": 4,
+      "text": "Enter your name",
+      "context": {
+        "text": "We need your name for our records",
+        "highlights": [[8, 11]]
+      },
+      "answers": [
+        {
+          "text": "John Doe",
+          "question": 4
+        }
+      ],
+      "type": "text"
     }
   ]
 }
