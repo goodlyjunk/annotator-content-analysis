@@ -59,17 +59,13 @@ const Quiz = React.createClass({
 
   canClickNext: function() {
     var f = this.state.questionAnswerFlags;
-    // if (this.props.questions.length !== Object.keys(f).length) {
-    //   var questionFlags = {}
-    //   for (var i = 0; i < this.props.questions.length; i++) {
-    //     questionFlags[this.props.questions[i].id] = false
-    //   }
-    //   this.setState({questionAnswerFlags: questionFlags});
-    //   f = questionFlags;
-    // }
-    //console.log(!Object.keys(f).map(i => f[i]).includes(false));
+    var questions = this.props.questions;
+    //need to include date type into this
+    var filteredQuestions = questions.filter(obj => obj.type !== 'text')
+                            .map(obj => obj.id);
+    var result = filteredQuestions.every(elem => Object.keys(f).map(i => parseInt(i)).includes(elem));
     return !Object.keys(f).map(i => f[i]).includes(false)
-           && this.textQuestionClickNext();
+           && this.textQuestionClickNext() && result;
   },
 
   prompt: function() {
