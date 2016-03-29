@@ -35,7 +35,7 @@ export default React.createClass({
       }
       this.props.onUpdate(this.props.question.id, isSelectedFlags.includes(true));
     } else {
-      this.props.onUpdate(-1, false, text);
+      this.props.onUpdate(this.props.question.id, false, text);
     }
   },
 

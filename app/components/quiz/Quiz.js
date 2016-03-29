@@ -32,10 +32,12 @@ const Quiz = React.createClass({
   getInitialState: function() {
     var questionFlags = {}
     for (var i = 0; i < this.props.questions.length; i++) {
-      questionFlags[this.props.questions[i].id] = false
+      if (this.props.questions[i].type !== 'text') {
+        questionFlags[this.props.questions[i].id] = false
+      }
     }
     //console.log(questionFlags);
-    return {questionAnswerFlags: questionFlags, answerText: ''};
+    return {questionAnswerFlags: questionFlags, answerText: {}};
   },
 
   onUpdate: function(questionId, onAnswered, text=null) {
@@ -45,19 +47,24 @@ const Quiz = React.createClass({
       this.setState({questionAnswerFlags: questionFlags});
     } else {
       //console.log(text);
-      this.setState({answerText: text});
+      var answerText = this.state.answerText === null ? {} : this.state.answerText;
+      answerText[questionId] = text;
+      this.setState({answerText: answerText});
+      console.log(answerText);
       //need to store in state
     }
   },
 
   textQuestionClickNext: function() {
-    if (this.props.questions.filter(obj => obj.type === 'text').length > 0) {
-      return this.state.answerText !== ''
+    var filteredTextQuestionsArray = this.props.questions.filter(obj => obj.type === 'text').map(obj => obj.id);
+    var answerText = this.state.answerText;
+    if (filteredTextQuestionsArray.length > 0) {
+      return filteredTextQuestionsArray.every(elem => answerText[elem] !== '');
     }
-    return true;
+    return answerText !== {};
   },
 
-  filteredQuestionsCheck: function(f) {
+  nextButtonCheck: function(f) {
     var questions = this.props.questions;
     //need to include date type into this
     var filteredQuestionsArray = questions.filter(obj => obj.type !== 'text')
@@ -70,7 +77,7 @@ const Quiz = React.createClass({
     var f = this.state.questionAnswerFlags;
     return !Object.keys(f).map(i => f[i]).includes(false)
            && this.textQuestionClickNext()
-           && this.filteredQuestionsCheck(f);
+           && this.nextButtonCheck(f);
   },
 
   prompt: function() {
