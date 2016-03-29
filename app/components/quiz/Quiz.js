@@ -57,15 +57,20 @@ const Quiz = React.createClass({
     return true;
   },
 
-  canClickNext: function() {
-    var f = this.state.questionAnswerFlags;
+  filteredQuestionsCheck: function(f) {
     var questions = this.props.questions;
     //need to include date type into this
-    var filteredQuestions = questions.filter(obj => obj.type !== 'text')
-                            .map(obj => obj.id);
-    var result = filteredQuestions.every(elem => Object.keys(f).map(i => parseInt(i)).includes(elem));
+    var filteredQuestionsArray = questions.filter(obj => obj.type !== 'text')
+                                 .map(obj => obj.id);
+    return filteredQuestionsArray
+           .every(elem => Object.keys(f).map(i => parseInt(i)).includes(elem));
+  },
+
+  canClickNext: function() {
+    var f = this.state.questionAnswerFlags;
     return !Object.keys(f).map(i => f[i]).includes(false)
-           && this.textQuestionClickNext() && result;
+           && this.textQuestionClickNext()
+           && this.filteredQuestionsCheck(f);
   },
 
   prompt: function() {
