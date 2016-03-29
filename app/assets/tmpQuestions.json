@@ -14,9 +14,7 @@
         { "text": "500+", "question": 1}
       ],
       "type": "radio"
-    }
-  ],
-  "questions": [
+    },
     {
       "id": 2,
       "text": "At what time did the event start?",
@@ -70,7 +68,9 @@
         }
       ],
       "type": "radio"
-    },
+    }
+  ],
+  "questions": [
     {
       "id": 4,
       "text": "Enter your name",
@@ -82,6 +82,21 @@
         {
           "text": "John Doe",
           "question": 4
+        }
+      ],
+      "type": "text"
+    },
+    {
+      "id": 5,
+      "text": "Enter your age",
+      "context": {
+        "text": "We need your age for our records",
+        "highlights": [[8, 11]]
+      },
+      "answers": [
+        {
+          "text": "John Doe",
+          "question": 5
         }
       ],
       "type": "text"
