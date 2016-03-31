@@ -5,6 +5,7 @@ import React from 'react';
 import ReactCSSTransitionsGroup from 'react-addons-css-transition-group';
 import { connect } from 'react-redux';
 import tmpQuestions from 'assets/tmpQuestions.json';
+import moment from 'moment';
 
 import 'Quiz.scss';
 import 'fadeIn.scss';
@@ -50,7 +51,7 @@ const Quiz = React.createClass({
       var answerText = this.state.answerText === null ? {} : this.state.answerText;
       answerText[questionId] = text;
       this.setState({answerText: answerText});
-      //console.log(answerText);
+      console.log(moment(text).format());
       //need to store in state
     }
   },
@@ -58,11 +59,11 @@ const Quiz = React.createClass({
   textQuestionClickNext: function() {
     var filteredTextQuestionsArray = this.props.questions.filter(obj => obj.type === 'text').map(obj => obj.id);
     var answerText = this.state.answerText;
-    console.log(filteredTextQuestionsArray);
+    //console.log(filteredTextQuestionsArray);
     if (filteredTextQuestionsArray.length > 0 && answerText !== {}) {
-      console.log(answerText);
+      //console.log(answerText);
       var value = filteredTextQuestionsArray.every(elem => answerText[elem] !== '' && answerText[elem] !== undefined);
-      console.log(value);
+      //console.log(value);
       return value;
     }
     return answerText !== {};
