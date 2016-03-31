@@ -41,7 +41,9 @@
         }
       ],
       "type": "radio"
-    },
+    }
+  ],
+  "questions": [
     {
       "id": 3,
       "text": "At what time did the event end?",
@@ -68,9 +70,7 @@
         }
       ],
       "type": "radio"
-    }
-  ],
-  "questions": [
+    },
     {
       "id": 4,
       "text": "Enter your name",
