@@ -50,7 +50,7 @@ const Quiz = React.createClass({
       var answerText = this.state.answerText === null ? {} : this.state.answerText;
       answerText[questionId] = text;
       this.setState({answerText: answerText});
-      console.log(answerText);
+      //console.log(answerText);
       //need to store in state
     }
   },
@@ -58,8 +58,12 @@ const Quiz = React.createClass({
   textQuestionClickNext: function() {
     var filteredTextQuestionsArray = this.props.questions.filter(obj => obj.type === 'text').map(obj => obj.id);
     var answerText = this.state.answerText;
-    if (filteredTextQuestionsArray.length > 0) {
-      return filteredTextQuestionsArray.every(elem => answerText[elem] !== '');
+    console.log(filteredTextQuestionsArray);
+    if (filteredTextQuestionsArray.length > 0 && answerText !== {}) {
+      console.log(answerText);
+      var value = filteredTextQuestionsArray.every(elem => answerText[elem] !== '' && answerText[elem] !== undefined);
+      console.log(value);
+      return value;
     }
     return answerText !== {};
   },
@@ -92,6 +96,7 @@ const Quiz = React.createClass({
   },
 
   render() {
+    //console.log(this.canClickNext())
     var opts = this.canClickNext() ? {} : {disabled: true};
     return (
       <ReactCSSTransitionsGroup transitionName='fadein'
