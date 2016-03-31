@@ -73,30 +73,15 @@
     },
     {
       "id": 4,
-      "text": "Enter your name",
+      "text": "Enter today's date and time",
       "context": {
-        "text": "We need your name for our records",
+        "text": "We need this info for our records",
         "highlights": [[8, 11]]
       },
       "answers": [
         {
           "text": "John Doe",
           "question": 4
-        }
-      ],
-      "type": "text"
-    },
-    {
-      "id": 5,
-      "text": "Enter your age",
-      "context": {
-        "text": "We need your age for our records",
-        "highlights": [[8, 11]]
-      },
-      "answers": [
-        {
-          "text": "John Doe",
-          "question": 5
         }
       ],
       "type": "text"
