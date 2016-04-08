@@ -85,6 +85,21 @@
         }
       ],
       "type": "datetime"
+    },
+    {
+      "id": 5,
+      "text": "Enter tomorrow's date and time",
+      "context": {
+        "text": "We need this info for our records",
+        "highlights": [[8, 11]]
+      },
+      "answers": [
+        {
+          "text": "John Doe",
+          "question": 5
+        }
+      ],
+      "type": "datetime"
     }
   ]
 }
