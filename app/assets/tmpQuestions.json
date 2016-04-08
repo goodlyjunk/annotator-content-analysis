@@ -84,7 +84,7 @@
           "question": 4
         }
       ],
-      "type": "text"
+      "type": "datetime"
     }
   ]
 }
