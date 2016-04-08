@@ -50,17 +50,18 @@ const Quiz = React.createClass({
       var answerText = this.state.answerText === null ? {} : this.state.answerText;
       answerText[questionId] = text;
       this.setState({answerText: answerText});
+      //console.log(answerText);
       //need to store in state
     }
   },
 
   textQuestionClickNext: function() {
-    var filteredTextQuestionsArray = this.props.questions.filter(obj => obj.type === 'text').map(obj => obj.id);
+    var filteredTextQuestionsArray = this.props.questions.filter(obj => (obj.type === 'text' || obj.type === 'datetime')).map(obj => obj.id);
     var answerText = this.state.answerText;
-    //console.log(filteredTextQuestionsArray);
+    console.log(filteredTextQuestionsArray);
     if (filteredTextQuestionsArray.length > 0 && answerText !== {}) {
-      //console.log(answerText);
-      var value = filteredTextQuestionsArray.every(elem => answerText[elem] !== '' && answerText[elem] !== undefined);
+      console.log(answerText);
+      var value = filteredTextQuestionsArray.every(elem => answerText[parseInt(elem)] !== '' && answerText[parseInt(elem)] !== undefined);
       //console.log(value);
       return value;
     }
@@ -70,7 +71,7 @@ const Quiz = React.createClass({
   nextButtonCheck: function(f) {
     var questions = this.props.questions;
     //need to include date type into this
-    var filteredQuestionsArray = questions.filter(obj => obj.type !== 'text')
+    var filteredQuestionsArray = questions.filter(obj => (obj.type !== 'text' && obj.type !== 'datetime'))
                                  .map(obj => obj.id);
     return filteredQuestionsArray
            .every(elem => Object.keys(f).map(i => parseInt(i)).includes(elem));
