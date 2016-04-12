@@ -15,3 +15,7 @@ export function newArticle(article) {
 export function newQuestions(questions) {
   return { type: types.NEW_QUESTIONS, questions };
 }
+
+export function updateAnswer(questionId, questionType, answer) {
+	return { type: types.UPDATE_ANSWER, answer: {questionId, questionType, answer}};
+}
