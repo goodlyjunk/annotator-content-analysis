@@ -36,7 +36,6 @@ const Quiz = React.createClass({
         questionFlags[this.props.questions[i].id] = false
       }
     }
-    //console.log(questionFlags);
     return {questionAnswerFlags: questionFlags, answerText: {}};
   },
 
@@ -46,11 +45,9 @@ const Quiz = React.createClass({
       questionFlags[questionId] = onAnswered;
       this.setState({questionAnswerFlags: questionFlags});
     } else {
-      //console.log(text);
-      var answerText = this.state.answerText === null ? {} : this.state.answerText;
+      var answerText = this.state.answerText ? this.state.answerText : {};
       answerText[questionId] = text;
       this.setState({answerText: answerText});
-      //console.log(answerText);
       //need to store in state
     }
   },
@@ -91,12 +88,10 @@ const Quiz = React.createClass({
 
   handleNext: function() {
     // on click, stuff in textbox should be saved
-    //console.log(this.state.answerText);
     this.props.onNewQuestions(tmpQuestions.questions);
   },
 
   render() {
-    //console.log(this.canClickNext())
     var opts = this.canClickNext() ? {} : {disabled: true};
     return (
       <ReactCSSTransitionsGroup transitionName='fadein'
