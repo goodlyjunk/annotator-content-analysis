@@ -13,6 +13,9 @@ const mapDispatchToProps = dispatch => {
   return {
     onNewQuestions: questions => {
       dispatch(newQuestions(questions));
+    },
+    onAnswerUpdate: answers => {
+      dispatch(updateAnswer(answers))
     }
   };
 }
