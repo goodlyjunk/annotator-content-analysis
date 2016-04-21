@@ -29,6 +29,7 @@ export default class api {
   }
 
   static sendHighlights(highlights) {
+    // TODO: finish this function
     $.ajax({ url: HIGHLIGHTS_URL,
              method: 'POST',
              data: highlights,
