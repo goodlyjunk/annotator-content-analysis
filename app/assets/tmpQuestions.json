@@ -42,7 +42,7 @@
           "question": 2
         }
       ],
-      "type": "radio"
+      "type": "checkbox"
     },
     {
       "id": 3,
