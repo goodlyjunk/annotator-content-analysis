@@ -1,12 +1,27 @@
 import React from 'react';
+import { updateAnswer } from 'actions/actions';
 import QuizAnswer from 'components/quiz/QuizAnswer.js';
 import QuizContext from 'components/quiz/QuizContext.js';
 import randomPalette from 'utils/palette';
+import { connect } from 'react-redux';
 
-export default React.createClass({
+const mapDispatchToProps = dispatch => {
+  return {
+    onAnswerUpdate: answers => {
+      dispatch(updateAnswer(answers));
+    }
+  };
+}
+
+const mapStateToProps = state => {
+  return { };
+}
+
+const QuizQuestion = React.createClass({
   displayName: 'QuizQuestion',
 
   propTypes: {
+    onAnswerUpdate: React.PropTypes.func,
     question: React.PropTypes.object.isRequired,
     onUpdate: React.PropTypes.func.isRequired
   },
@@ -25,6 +40,19 @@ export default React.createClass({
     if (this.props.question.type === 'checkbox') {
       // if it is a checkbox, it should update ONLY the required ID flag, leave others
       isSelectedFlags[id] = selected;
+      //console.log(isSelectedFlags);
+      var resultAnswers = isSelectedFlags.reduce((array, elem, id) => {
+        if (elem) {
+          array.push(id);
+        }
+        return array;
+        }, []);
+      var resultObj = {
+        questionId: this.props.question.id,
+        type: this.props.question.type,
+        answers: resultAnswers
+      };
+      this.props.onAnswerUpdate(resultObj);
       this.setState({isSelectedFlags});
     } else {
       // if it is a radio, it should set ALL others to false, only this id flag to true
@@ -63,3 +91,9 @@ export default React.createClass({
   }
 
 });
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(QuizQuestion);
+
