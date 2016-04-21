@@ -13,9 +13,6 @@ const mapDispatchToProps = dispatch => {
   return {
     onNewQuestions: questions => {
       dispatch(newQuestions(questions));
-    },
-    onAnswerUpdate: answers => {
-      dispatch(updateAnswer(answers))
     }
   };
 }
@@ -57,6 +54,8 @@ const Quiz = React.createClass({
   },
 
   handleNext: function() {
+    //console.log(this.state.questionAnswerFlags);
+    //this.props.onAnswerUpdate(this.state.questionAnswerFlags);
     this.props.onNewQuestions(tmpQuestions.questions);
   },
 
