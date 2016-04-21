@@ -36,6 +36,7 @@ const QuizQuestion = React.createClass({
 
   answerClicked: function(id, selected) {
     // from child, which id of answer was clicked.
+    console.log(state.quizReducers.answers);
     var isSelectedFlags = this.state.isSelectedFlags;
     if (this.props.question.type === 'checkbox') {
       // if it is a checkbox, it should update ONLY the required ID flag, leave others
@@ -58,6 +59,12 @@ const QuizQuestion = React.createClass({
       // if it is a radio, it should set ALL others to false, only this id flag to true
       isSelectedFlags = Array(isSelectedFlags.length).fill(false);
       isSelectedFlags[id] = selected;
+      var resultObj = {
+        questionId: this.props.question.id,
+        type: this.props.question.type,
+        answers: id
+      };
+      this.props.onAnswerUpdate(resultObj);
       this.setState({isSelectedFlags});
     }
     this.props.onUpdate(this.props.question.id, isSelectedFlags.includes(true));
