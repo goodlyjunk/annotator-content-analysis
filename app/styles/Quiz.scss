@@ -19,6 +19,11 @@
   }
 
   &__question {
+    border: 1px solid grey;
+    padding: 10px 20px;
+    margin: 30px;
+    border-radius: 2px;
+
     .quiz__context {
       font-size: 14pt;
       span {
@@ -30,7 +35,7 @@
         font-style: italic;
       }
     }
-    
+
   }
 }
 
@@ -45,5 +50,5 @@
   &.active {
     opacity: 1;
   }
-  
+
 }

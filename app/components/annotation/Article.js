@@ -92,7 +92,7 @@ const Article = React.createClass({
         <div className='tua__header-text'>
           Focus on the bold text about '{topic.name}' and answer the questions.
         </div>
-        <div ref={(ref) => this.articleRef = ref} className='article' onClick={this.handleClick}>
+        <div ref={(ref) => this.articleRef = ref} onClick={this.handleClick}>
           {Array(highlights.length * 2).fill().map((_,i) => {
             var curHL = highlights[i / 2 | 0];
             if (i % 2 === 0) {

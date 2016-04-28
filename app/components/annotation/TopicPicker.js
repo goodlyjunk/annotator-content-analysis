@@ -68,9 +68,6 @@ const TopicPicker = React.createClass({
         $(`.topic-picker__nav li[data-topic='${topic}']`).addClass('active');
         $('.text-wrapper__text').attr('data-topic', topic);
 
-        $('.topic-wrapper').hide();
-        $(`.topic-wrapper[data-topic="${topic}"]`).show();
-
         _this.props.onActivateTopic(topic);
       }
 
