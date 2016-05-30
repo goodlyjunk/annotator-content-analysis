@@ -7,14 +7,20 @@ import api from '../api.js';
 // as we go
 
 function getInitialState() {
-  return { articles: api.getArticles() };
+  return { article: { articles: api.getArticles() } };
 }
 
 const initialState = Object.assign({
-  articles: [],
-  highlights: [],
-  // TODO: somehow track what the user's seen in their sessions not just count
-  curArticle: 0,
+  article: {
+    articles: [],
+    // TODO: somehow track what the user's seen in their sessions not just count
+    curArticle: 0,
+    highlights: []
+  },
+  topic: {
+    currentTopic: 0,
+    topics: []
+  }
 }, getInitialState());
 
 function mergeHighlights(list) {
@@ -40,6 +46,15 @@ function mergeHighlights(list) {
   return newlist;
 }
 
+function topic(state = {}, action) {
+  switch (action.type) {
+    case ACTIVATE_TOPIC:
+      return Object.assign({}, state, { currentTopic: action.topic });
+    default:
+      return state;
+  }
+}
+
 export default function articleReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_HIGHLIGHT:
@@ -47,7 +62,7 @@ export default function articleReducer(state = initialState, action) {
         { start: action.selection.start,
           end: action.selection.end,
           text: action.selection.selectedText,
-          topic: state.currentTopic }
+          topic: state.topic.currentTopic }
       ).sort((a,b) => {
         if (a.start === b.start) {
           return 0;
@@ -68,8 +83,6 @@ export default function articleReducer(state = initialState, action) {
       }
       return Object.assign({}, state, { highlights: [],
                                         curArticle: state.curArticle + 1 });
-    case ACTIVATE_TOPIC:
-      return Object.assign({}, state, { currentTopic: action.topic });
     default:
       return state;
   }

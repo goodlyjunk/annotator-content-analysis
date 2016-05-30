@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import articleReducers from './articleReducers';
+import annotationReducers from './annotationReducers';
 import quizReducers from './quizReducers';
 
 const rootReducer = combineReducers({
-  articleReducers,
+  annotationReducers,
   quizReducers
 });
 

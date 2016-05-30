@@ -13,8 +13,8 @@ const mapDispatchToProps = dispatch => {
 }
 
 const mapStateToProps = state => {
-  return { highlights: state.articleReducers.highlights,
-           currentTopic: state.articleReducers.currentTopic };
+  return { highlights: state.annotationReducers.highlights,
+           currentTopic: state.annotationReducers.currentTopic };
 }
 
 const Article = React.createClass({
