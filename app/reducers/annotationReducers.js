@@ -6,13 +6,9 @@ import api from '../api.js';
 // Note: not 100% sure this is the 'proper' reducer layout - we'll find out more
 // as we go
 
-function getInitialState() {
-  return { article: { articles: api.getArticles() } };
-}
-
-const initialState = Object.assign({
+const initialState = {
   article: {
-    articles: [],
+    articles: api.getArticles(),
     // TODO: somehow track what the user's seen in their sessions not just count
     curArticle: 0,
     highlights: []
@@ -21,7 +17,9 @@ const initialState = Object.assign({
     currentTopic: 0,
     topics: []
   }
-}, getInitialState());
+}
+
+console.log('initstate of article reducer', initialState);
 
 function mergeHighlights(list) {
   // TODO: write tests for me

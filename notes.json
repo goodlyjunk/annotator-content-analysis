@@ -45,3 +45,4 @@
 
 
 redux-ify the topic picker
+future travelers beware: object.assign doesnt deep merge (ofc)

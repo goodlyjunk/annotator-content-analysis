@@ -17,8 +17,8 @@ const mapDispatchToProps = dispatch => {
 }
 
 const mapStateToProps = state => {
-  return { articles: state.annotationReducers.articles,
-           curArticle: state.annotationReducers.curArticle };
+  return { articles: state.annotationReducers.article.articles,
+           curArticle: state.annotationReducers.article.curArticle };
 }
 
 const Tua = React.createClass({
