@@ -32,20 +32,53 @@ const Quiz = React.createClass({
   getInitialState: function() {
     var questionFlags = {}
     for (var i = 0; i < this.props.questions.length; i++) {
-      questionFlags[this.props.questions[i].id] = false
+      if (this.props.questions[i].type !== 'text') {
+        questionFlags[this.props.questions[i].id] = false
+      }
     }
-    return {questionAnswerFlags: questionFlags};
+    return {questionAnswerFlags: questionFlags, answerText: {}};
   },
 
-  onUpdate: function(questionId, onAnswered) {
-    var questionFlags = this.state.questionAnswerFlags;
-    questionFlags[questionId] = onAnswered;
-    this.setState({questionAnswerFlags: questionFlags});
+  onUpdate: function(questionId, onAnswered, text=null) {
+    if (text === null) {
+      var questionFlags = this.state.questionAnswerFlags;
+      questionFlags[questionId] = onAnswered;
+      this.setState({questionAnswerFlags: questionFlags});
+    } else {
+      var answerText = this.state.answerText ? this.state.answerText : {};
+      answerText[questionId] = text;
+      this.setState({answerText: answerText});
+      //need to store in state
+    }
+  },
+
+  textQuestionClickNext: function() {
+    var filteredTextQuestionsArray = this.props.questions.filter(obj => obj.type === 'text').map(obj => obj.id);
+    var answerText = this.state.answerText;
+    console.log(filteredTextQuestionsArray);
+    if (filteredTextQuestionsArray.length > 0 && answerText !== {}) {
+      console.log(answerText);
+      var value = filteredTextQuestionsArray.every(elem => answerText[elem] !== '' && answerText[elem] !== undefined);
+      console.log(value);
+      return value;
+    }
+    return answerText !== {};
+  },
+
+  nextButtonCheck: function(f) {
+    var questions = this.props.questions;
+    //need to include date type into this
+    var filteredQuestionsArray = questions.filter(obj => obj.type !== 'text')
+                                 .map(obj => obj.id);
+    return filteredQuestionsArray
+           .every(elem => Object.keys(f).map(i => parseInt(i)).includes(elem));
   },
 
   canClickNext: function() {
     var f = this.state.questionAnswerFlags;
-    return !Object.keys(f).map(i => f[i]).includes(false);
+    return !Object.keys(f).map(i => f[i]).includes(false)
+           && this.textQuestionClickNext()
+           && this.nextButtonCheck(f);
   },
 
   prompt: function() {
@@ -54,6 +87,7 @@ const Quiz = React.createClass({
   },
 
   handleNext: function() {
+    // on click, stuff in textbox should be saved
     this.props.onNewQuestions(tmpQuestions.questions);
   },
 

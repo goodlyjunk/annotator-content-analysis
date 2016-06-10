@@ -19,20 +19,24 @@ export default React.createClass({
     return {colors: randomColors, isSelectedFlags: isSelected};
   },
 
-  answerClicked: function(id, selected) {
+  answerProcessed: function(id, selected, text=null) {
     // from child, which id of answer was clicked.
-    var isSelectedFlags = this.state.isSelectedFlags;
-    if (this.props.question.type === 'checkbox') {
-      // if it is a checkbox, it should update ONLY the required ID flag, leave others
-      isSelectedFlags[id] = selected;
-      this.setState({isSelectedFlags});
+    if (text === null) {
+      var isSelectedFlags = this.state.isSelectedFlags;
+      if (this.props.question.type === 'checkbox') {
+        // if it is a checkbox, it should update ONLY the required ID flag, leave others
+        isSelectedFlags[id] = selected;
+        this.setState({isSelectedFlags});
+      } else {
+        // if it is a radio, it should set ALL others to false, only this id flag to true
+        isSelectedFlags = Array(isSelectedFlags.length).fill(false);
+        isSelectedFlags[id] = selected;
+        this.setState({isSelectedFlags});
+      }
+      this.props.onUpdate(this.props.question.id, isSelectedFlags.includes(true));
     } else {
-      // if it is a radio, it should set ALL others to false, only this id flag to true
-      isSelectedFlags = Array(isSelectedFlags.length).fill(false);
-      isSelectedFlags[id] = selected;
-      this.setState({isSelectedFlags});
+      this.props.onUpdate(this.props.question.id, false, text);
     }
-    this.props.onUpdate(this.props.question.id, isSelectedFlags.includes(true));
   },
 
   render() {
@@ -53,7 +57,7 @@ export default React.createClass({
                           isSelected={isSelected}
                           id={i}
                           colors={color}
-                          answerClicked={this.answerClicked}
+                          answerProcessed={this.answerProcessed}
                           type={this.props.question.type}/>
             );
           })}
