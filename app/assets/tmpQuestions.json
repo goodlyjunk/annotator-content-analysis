@@ -14,9 +14,7 @@
         { "text": "500+", "question": 1}
       ],
       "type": "radio"
-    }
-  ],
-  "questions": [
+    },
     {
       "id": 2,
       "text": "At what time did the event start?",
@@ -43,7 +41,9 @@
         }
       ],
       "type": "radio"
-    },
+    }
+  ],
+  "questions": [
     {
       "id": 3,
       "text": "At what time did the event end?",
@@ -70,6 +70,36 @@
         }
       ],
       "type": "radio"
+    },
+    {
+      "id": 4,
+      "text": "Enter today's date and time",
+      "context": {
+        "text": "We need this info for our records",
+        "highlights": [[8, 11]]
+      },
+      "answers": [
+        {
+          "text": "John Doe",
+          "question": 4
+        }
+      ],
+      "type": "datetime"
+    },
+    {
+      "id": 5,
+      "text": "Enter tomorrow's date and time",
+      "context": {
+        "text": "We need this info for our records",
+        "highlights": [[8, 11]]
+      },
+      "answers": [
+        {
+          "text": "John Doe",
+          "question": 5
+        }
+      ],
+      "type": "datetime"
     }
   ]
 }
