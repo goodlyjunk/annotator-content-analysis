@@ -50,7 +50,7 @@ const Tua = React.createClass({
     // TODO: we need to have a larger discussion of route design
     // const {cur_article}: string = this.props.params;
     let cur_article = this.props.curArticle;
-    let tua = this.props.articles[cur_article];
+    let tua = this.props.articles.article[cur_article];
     let article = tua.article;
     let topics = tua.analysis_type.topics;
 
