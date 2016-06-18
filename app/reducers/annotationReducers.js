@@ -56,7 +56,7 @@ function topic(state = {}, action) {
 export default function articleReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_HIGHLIGHT:
-      var newHighlights = state.highlights.concat(
+      var newHighlights = state.article.highlights.concat(
         { start: action.selection.start,
           end: action.selection.end,
           text: action.selection.selectedText,
@@ -70,17 +70,18 @@ export default function articleReducer(state = initialState, action) {
           return 1;
         }
       });
-      return Object.assign({}, state,
-                           { highlights: mergeHighlights(newHighlights) });
+      return Object.assign({}, state, { article: {
+                             highlights: mergeHighlights(newHighlights)
+                           }});
     case NEW_ARTICLE:
-      api.sendHighlights(state.highlights);
-      if (!action.article || action.article >= state.articles.length) {
-        return Object.assign({}, state, { articles: api.getArticles(),
-                                          highlights: [],
-                                          curArticle: 0 });
+      api.sendHighlights(state.article.highlights);
+      if (!action.article || action.article >= state.article.articles.length) {
+        return Object.assign({}, state, { article: { articles: api.getArticles(),
+                                                     highlights: [],
+                                                     curArticle: 0 }});
       }
-      return Object.assign({}, state, { highlights: [],
-                                        curArticle: state.curArticle + 1 });
+      return Object.assign({}, state, { article: { highlights: [],
+                                                   curArticle: state.article.curArticle + 1 }});
     default:
       return state;
   }

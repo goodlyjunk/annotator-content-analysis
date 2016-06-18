@@ -17,6 +17,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 const mapStateToProps = state => {
+  debugger;
   return { articles: state.annotationReducers.article.articles,
            curArticle: state.annotationReducers.article.curArticle };
 }
