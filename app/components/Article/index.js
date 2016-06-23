@@ -1,8 +1,8 @@
 import React from 'react';
-import { addHighlight } from 'actions/actions';
+import { addHighlight } from 'actions/article';
 import { connect } from 'react-redux';
 
-import 'Article.scss';
+import {styles} from './styles.scss';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -71,8 +71,8 @@ const Article = React.createClass({
   },
 
   render() {
-    const {topic_id}: string = this.context.params
-    let topic = this.props.topics[topic_id];
+    // const {topic_id}: string = this.context.params
+    // let topic = this.props.topics[topic_id];
 
     var text = this.props.article.text;
     var highlights = this.props.highlights || [];
@@ -90,7 +90,7 @@ const Article = React.createClass({
     return (
       <div className='article'>
         <div className='tua__header-text'>
-          Focus on the bold text about '{topic.name}' and answer the questions.
+          Focus on the bold text about FOO and answer the questions.
         </div>
         <div ref={(ref) => this.articleRef = ref} className='article' onClick={this.handleClick}>
           {Array(highlights.length * 2).fill().map((_,i) => {

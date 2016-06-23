@@ -1,12 +1,12 @@
-import { newArticle } from 'actions/actions';
-import Article from 'components/annotation/article';
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import ReactCSSTransitionsGroup from 'react-addons-css-transition-group';
 import { connect } from 'react-redux';
-import TopicPicker from 'components/annotation/topicPicker';
 
-import 'fade.scss';
+import { newArticle } from 'actions/article';
+
+import Article from 'components/Article';
+import TopicPicker from 'components/topicPicker';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -21,30 +21,19 @@ const mapStateToProps = state => {
            curArticle: state.articleReducers.curArticle };
 }
 
-const Tua = React.createClass({
-  displayName: 'Tua',
-
-  childContextTypes: {
-    params: React.PropTypes.object.isRequired
-  },
-
-  getChildContext() {
-    return {
-      params: this.props.params
-    };
-  },
-
-  propTypes: {
-    articles: React.PropTypes.array,
-    onNewArticle: React.PropTypes.func,
-    params: React.PropTypes.object.isRequired,
-    curArticle: React.PropTypes.number
-  },
+@connect (
+    mapStateToProps,
+    mapDispatchToProps
+)
+export class TopicHighlighter extends Component {
+  constructor(props) {
+    super(props);
+  }
 
   handleNext() {
     this.props.onNewArticle(this.props.curArticle + 1);
     ReactDOM.findDOMNode(this).scrollIntoView();
-  },
+  }
 
   render() {
     // TODO: we need to have a larger discussion of route design
@@ -77,9 +66,4 @@ const Tua = React.createClass({
       </ReactCSSTransitionsGroup>
     );
   }
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Tua);
+};

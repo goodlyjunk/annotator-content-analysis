@@ -1,7 +1,7 @@
 import React from 'react';
 import jquery from 'jquery';
-import CollapsibleList from 'components/CollapsibleList';
-import { activateTopic } from 'actions/actions';
+import CollapsibleList from 'components/collapsibleList';
+import { activateTopic } from 'actions/article';
 import { connect } from 'react-redux';
 
 import 'TopicPicker.scss';

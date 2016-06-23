@@ -51,14 +51,6 @@ export default {
       publicPath: PUBLIC_PATH
     },
     module: {
-      preLoaders: [
-        {
-          test: /\.js$|.jsx$/,
-          include: path.join(__dirname, '../app'),
-          exclude: /node-modules/,
-          loaders: ['eslint', 'jscs']
-        }
-      ],
       loaders: [
         {
           test: /\.json$/,
@@ -83,9 +75,10 @@ export default {
           loader: "file-loader"
         },
         {
-          test: /\.js$|.jsx$/,
+          test: /\.js$/,
           include: /app/,
-          loaders: ['react-hot', 'babel']
+          exclue: /node_modules/,
+          loaders: ['babel-loader']
         }
       ]
     },

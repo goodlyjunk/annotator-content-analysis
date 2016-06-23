@@ -1,6 +1,6 @@
 import { ADD_HIGHLIGHT,
          NEW_ARTICLE,
-         ACTIVATE_TOPIC } from '../actions/actionTypes';
+         ACTIVATE_TOPIC } from 'actions/article';
 import api from '../api.js';
 
 // Note: not 100% sure this is the 'proper' reducer layout - we'll find out more
