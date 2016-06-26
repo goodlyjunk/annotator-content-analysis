@@ -2,19 +2,24 @@ import { ADD_HIGHLIGHT,
          NEW_ARTICLE,
          ACTIVATE_TOPIC } from 'actions/article';
 import api from '../api.js';
+import articleJsonMock from '../assets/article_0_mock.json';
+import topicJsonMock from '../assets/topic_0_mock.json';
 
 // Note: not 100% sure this is the 'proper' reducer layout - we'll find out more
 // as we go
 
 function getInitialState() {
-  return { articles: api.getArticles() };
+  return {
+    articles: [articleJsonMock],
+    topics: topicJsonMock.results
+  };
 }
 
 const initialState = Object.assign({
-  articles: [],
+  article: [],
+  topics: [],
   highlights: [],
-  // TODO: somehow track what the user's seen in their sessions not just count
-  curArticle: 0,
+  curArticle: 0
 }, getInitialState());
 
 function mergeHighlights(list) {

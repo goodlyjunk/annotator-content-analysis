@@ -18,6 +18,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return { articles: state.articleReducers.articles,
+           topics: state.articleReducers.topics,
            curArticle: state.articleReducers.curArticle };
 }
 
@@ -36,12 +37,10 @@ export class TopicHighlighter extends Component {
   }
 
   render() {
-    // TODO: we need to have a larger discussion of route design
-    // const {cur_article}: string = this.props.params;
+    console.log(this.props);
     let cur_article = this.props.curArticle;
-    let tua = this.props.articles[cur_article];
-    let article = tua.article;
-    let topics = tua.analysis_type.topics;
+    let article = this.props.articles[cur_article];
+    let topics = this.props.topics[cur_article];
 
     return (
       <ReactCSSTransitionsGroup transitionName='fadein'

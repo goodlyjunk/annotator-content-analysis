@@ -35,7 +35,7 @@ export default {
   },
   webpack: {
     context: path.join(__dirname, '../'),
-    devtool: 'eval-source-map',
+    devtool: 'cheap-source-map',
     entry: {
       app: [
         `webpack-dev-server/client?http://localhost:${WEBPACK_PORT}`,
@@ -51,6 +51,7 @@ export default {
       publicPath: PUBLIC_PATH
     },
     module: {
+
       loaders: [
         {
           test: /\.json$/,
