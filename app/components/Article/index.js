@@ -13,20 +13,16 @@ const mapDispatchToProps = dispatch => {
 }
 
 const mapStateToProps = state => {
-  return { highlights: state.articleReducers.highlights,
-           currentTopic: state.articleReducers.currentTopic };
+  return { highlights: state.article.highlights,
+           currentTopic: state.article.currentTopic };
 }
 
 const Article = React.createClass({
   displayName: 'Article',
 
-  contextTypes: {
-    params: React.PropTypes.object.isRequired
-  },
 
   propTypes: {
     article: React.PropTypes.object.isRequired,
-    topics: React.PropTypes.array.isRequired,
     onHighlight: React.PropTypes.func,
     highlights: React.PropTypes.array,
     currentTopic: React.PropTypes.string
@@ -71,6 +67,7 @@ const Article = React.createClass({
   },
 
   render() {
+    // console.log(this.props);
     // const {topic_id}: string = this.context.params
     // let topic = this.props.topics[topic_id];
 

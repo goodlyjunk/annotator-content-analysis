@@ -19,3 +19,10 @@ export function newArticle(article) {
   // we should hit the backend for a fresh batch of articles
   return { type: NEW_ARTICLE, article };
 }
+
+export function getArticle(articleId) {
+  return {
+    type: 'GET_ARTICLE',
+    articleId
+  };
+}

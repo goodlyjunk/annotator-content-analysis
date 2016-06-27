@@ -45,10 +45,7 @@ const TopicPicker = React.createClass({
       topicsTmp: [
         { id: '1', name: 'Topic 1',
           description: `
-          Topic 1 is cottage cheese mascarpone croque monsieur hard cheese. Ricotta.
-
-          Cow monterey jack taleggio. Cream cheese say cheese cheese triangles cut the cheese when the cheese comes out everybody is happy parmesan cheesecake say cheese. Boursin cut the cheese jarlsberg goat pecorino everyone loves cheesy feet stinking bishop.
-        ` },
+          Topic 1 is Foo...` },
         { id: '2', name: 'Topic 2', description: 'Topic 2 is placeholder' },
         { id: '3', name: 'Topic 3', description: '' },
         { id: '4', name: 'Topic 4', description: '' }

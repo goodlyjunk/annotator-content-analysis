@@ -1,44 +1,52 @@
 import React, {Component} from 'react';
+import { bindActionCreators } from 'redux';
 import ReactDOM from 'react-dom';
 import ReactCSSTransitionsGroup from 'react-addons-css-transition-group';
 import { connect } from 'react-redux';
 
-import { newArticle } from 'actions/article';
+import * as articleActionCreators from 'actions/article';
+
+const assembledActionCreators = Object.assign({}, articleActionCreators)
 
 import Article from 'components/Article';
 import TopicPicker from 'components/topicPicker';
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onNewArticle: article => {
-      dispatch(newArticle(article));
-    }
-  };
-}
-
 const mapStateToProps = state => {
-  return { articles: state.articleReducers.articles,
-           topics: state.articleReducers.topics,
-           curArticle: state.articleReducers.curArticle };
+  return { articles: state.article.articles,
+           topics: state.article.topics,
+           curArticle: state.article.curArticle };
 }
 
 @connect (
     mapStateToProps,
-    mapDispatchToProps
+    dispatch => bindActionCreators(assembledActionCreators, dispatch)
 )
 export class TopicHighlighter extends Component {
   constructor(props) {
     super(props);
   }
 
+  componentDidMount() {
+    this.props.getArticle(this.props.routeParams.articleId);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.curArticle != nextProps.routeParams.articleId){
+      this.props.getArticle(nextProps.routeParams.articleId);
+    }
+  }
+
+
   handleNext() {
-    this.props.onNewArticle(this.props.curArticle + 1);
+    this.props.newArticle(this.props.curArticle + 1);
     ReactDOM.findDOMNode(this).scrollIntoView();
   }
 
   render() {
-    console.log(this.props);
     let cur_article = this.props.curArticle;
+    if (cur_article == null) {
+      return false
+    }
     let article = this.props.articles[cur_article];
     let topics = this.props.topics[cur_article];
 
@@ -55,12 +63,12 @@ export class TopicHighlighter extends Component {
                                       transitionAppearTimeout={500}
                                       transitionEnterTimeout={500}
                                       transitionLeaveTimeout={500}>
-              <Article topics={topics} article={article} key={cur_article}/>
+              <Article article={article} key={cur_article}/>
             </ReactCSSTransitionsGroup>
             <br/>
             <button onClick={this.handleNext}>Next</button>
           </div>
-          <TopicPicker topics={topics}/>
+          <TopicPicker {...this.props}/>
         </div>
       </ReactCSSTransitionsGroup>
     );

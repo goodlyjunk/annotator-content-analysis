@@ -35,7 +35,7 @@ export default {
   },
   webpack: {
     context: path.join(__dirname, '../'),
-    devtool: 'cheap-source-map',
+    devtool: 'source-map',
     entry: {
       app: [
         `webpack-dev-server/client?http://localhost:${WEBPACK_PORT}`,
