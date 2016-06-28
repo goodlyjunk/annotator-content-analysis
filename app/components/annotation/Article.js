@@ -70,12 +70,122 @@ const Article = React.createClass({
     }
   },
 
+  processHighlights: function(highlights) {
+    /* highlights: sorted (by start) list of highlights {start, end, topic}*/
+    /*return processedhighlights of new {start, end, topics}*/
+    var parsedHighlights = [];
+    var processHighlights = [];
+    for (i in highlights) {
+      start = {"type": "start", "index": i.start, "topic": i.topic, "source": i};
+      end = {"type": "end", "index": i.end, "topic": i.topic, "source": i};
+      parsedHighlights.append(start);
+      parsedHighlights.append(end);
+    }
+    /* sort by beginning index value, check if it works or not*/
+    parsedHighlights.sort((a,b) => {
+      if (a.index === b.index) {
+        return 0;
+      } else if (a.index < b.index) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+    activeSources = [];
+    activeTopic1 = false;
+    activeTopic2 = false;
+    activeTopic3 = false;
+    activeTopic4 = false;
+    start = 0;
+    for (i in parsedHighlights) {
+      if (activeTopic1 || activeTopic2 || activeTopic3 || activeTopic4) {
+        var processed = {"start": -1, "end": -1, "topics": [], "source": []};
+        processed.start = start;
+        processed.end = i.start;
+        processed.source = activeSources;
+        if (activeTopic1) {
+          processed.topics.append("topic1");
+        }
+        if (activeTopic2) {
+          processed.topics.append("topic2");
+        }
+        if (activeTopic3) {
+          processed.topics.append("topic3");
+        }
+        if (activeTopic4) {
+          processed.topics.append("topic4");
+        }
+        processedHighlights.append(processed);
+      }
+      start = i.start;
+      /* Update active topics */
+      if (i.type === "start") {
+        activeSources.append(i.source);
+        switch(i.topic) {
+          case("topic1"):
+            activeTopic1 = true;
+          case("topic2"):
+            activeTopic2 = true;
+          case("topic3"):
+            activeTopic3 = true;
+          case("topic4"):
+            activeTopic4 = true;
+        }
+      }
+      if (i.type === "end") {
+        activeSources.remove(i.source);
+        switch(i.topic) {
+          case("topic1"):
+            activeTopic1 = false;
+          case("topic2"):
+            activeTopic2 = false;
+          case("topic3"):
+            activeTopic3 = false;
+          case("topic4"):
+            activeTopic4 = false;
+        }
+      }
+    }
+    return processedHighlights;
+  }
+
+  mergeColors: function(topics) {
+    var list = []
+    /* list is a list of rgb colors*/
+    /* may need a more flexible way of add topic colors */
+    for (i in topics) {
+      switch(i) {
+        case "topic1":
+          list.append(rgb(241,96,97));
+        case "topic2":
+          list.append(rgb(253,212,132));
+        case "topic3":
+          list.append(rgb(175,215,146));
+        case "topics4":
+          list.append(rgb(168,210,191));
+      }
+    }
+    var colors = len(list);
+    var fraction = 1/colors
+    var red = 0;
+    var blue = 0;
+    var green = 0;
+    for (i in list) {
+      red += fraction*i.getRed();
+      green += fraction*i.getGreen();
+      blue += fraction*i.getBlue();
+    }
+    return rgb(red, green, blue)
+  },
+
   render() {
     const {topic_id}: string = this.context.params
     let topic = this.props.topics[topic_id];
 
     var text = this.props.article.text;
-    var highlights = this.props.highlights || [];
+    /* replace this.props.article with processHighlights(this.props.highlights)*/
+    /*var highlights = this.props.highlights || [];*/
+    var highlights = processedHighlights(this.props.highlights) || [];
 
     var start = 0;
     var tail = '';
@@ -100,9 +210,16 @@ const Article = React.createClass({
               return (<span key={i}>{text.substring(start, curHL.start)}</span>);
             } else {
               // render highlight
+              // Pass in source highlight objects
+              // add color here from topics
               start = curHL.end;
               return (<span key={i}
-                            className={'highlighted topic' + curHL.topic}
+
+                            // new
+                            style={{background-color: mergeColors(curHL.topics)}}
+                            source={curHL.source}
+                            // new
+                            className={'highlighted topic' /*+ curHL.topic*/}
                       >{text.substring(curHL.start, curHL.end)}</span>);
             }
           })}
@@ -111,7 +228,6 @@ const Article = React.createClass({
       </div>
     );
   }
-
 });
 
 export default connect(

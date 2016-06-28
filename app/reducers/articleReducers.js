@@ -19,12 +19,20 @@ const initialState = Object.assign({
 
 function mergeHighlights(list) {
   // TODO: write tests for me
+
+  //Adding case for multiple classes on text
+  //list sorted based on beginnings,
+  //to check if end of first is greater than beginning of next
+  // is guaranteed to overlap
+
   var newlist = [];
   var n = list.length;
   for (var i = 0; i < n;) {
     var newrange = Object.assign({}, list[i]);
+    //Going through all the highlights
     for (var j = i + 1; j < n; j++) {
-      if (list[i].end >= list[j].start) {
+      //Merge if same topic
+      if ((list[i].end >= list[j].start) && (list[i].topic === list[j].topic)) {
         newrange.text += list[j].text.substring(
           Math.min(newrange.end, list[j].end) - list[j].start, list[j].end
         );
@@ -40,6 +48,23 @@ function mergeHighlights(list) {
   return newlist;
 }
 
+// Function that takes a list of rgb colors and returns a new average color
+// When overlap detected (i.e. two classes detected), color replaced
+
+function updateHighlights(highlights) {
+  /*passing in list of highlight objects with attributes:
+  - start
+  - end
+  - text
+  - list of topics
+  */
+  /* Detect overlapping regions */
+}
+
+//WHAT: Deals with highlights, Generating aritcles, and Activating Topics
+//TODO ADD_HIGHLIGHT:
+// - option to delete highlights
+// - be able to support overlapping highlights
 export default function articleReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_HIGHLIGHT:
@@ -67,7 +92,7 @@ export default function articleReducer(state = initialState, action) {
                                           curArticle: 0 });
       }
       return Object.assign({}, state, { highlights: [],
-                                        curArticle: state.curArticle + 1 });
+                                      curArticle: state.curArticle + 1 });
     case ACTIVATE_TOPIC:
       return Object.assign({}, state, { currentTopic: action.topic });
     default:

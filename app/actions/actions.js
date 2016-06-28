@@ -4,6 +4,11 @@ export function addHighlight(start, end, selectedText) {
   return { type: types.ADD_HIGHLIGHT, selection: {start, end, selectedText} };
 }
 
+//WHAT: for deleting highlights
+export function deleteHighlight(start, end, selectedText) {
+  return { type: types.DELETE_HIGHLIGHT, selection: {start, end, selectedText}};
+}
+
 export function activateTopic(topic) {
   return { type: types.ACTIVATE_TOPIC, topic };
 }
