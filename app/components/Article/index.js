@@ -1,8 +1,9 @@
 import React from 'react';
 import { addHighlight } from 'actions/article';
 import { connect } from 'react-redux';
+import 'text-highlighter/src/TextHighlighter'
 
-import {styles} from './styles.scss';
+import { styles } from './styles.scss';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -26,6 +27,11 @@ const Article = React.createClass({
     onHighlight: React.PropTypes.func,
     highlights: React.PropTypes.array,
     currentTopic: React.PropTypes.string
+  },
+
+  componentDidMount: function() {
+    let articleContainer = document.getElementById('article-container');
+    this.annotationsObject = new TextHighlighter(articleContainer);
   },
 
   getOffset: function(childNodes, targetNode) {
@@ -89,7 +95,7 @@ const Article = React.createClass({
         <div className='tua__header-text'>
           Focus on the bold text about FOO and answer the questions.
         </div>
-        <div ref={(ref) => this.articleRef = ref} className='article' onClick={this.handleClick}>
+        <div ref={(ref) => this.articleRef = ref} id='article-container' className='article' onClick={this.handleClick}>
           {Array(highlights.length * 2).fill().map((_,i) => {
             var curHL = highlights[i / 2 | 0];
             if (i % 2 === 0) {
