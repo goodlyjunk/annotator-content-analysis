@@ -51,16 +51,6 @@ function mergeHighlights(list) {
 // Function that takes a list of rgb colors and returns a new average color
 // When overlap detected (i.e. two classes detected), color replaced
 
-function updateHighlights(highlights) {
-  /*passing in list of highlight objects with attributes:
-  - start
-  - end
-  - text
-  - list of topics
-  */
-  /* Detect overlapping regions */
-}
-
 //WHAT: Deals with highlights, Generating aritcles, and Activating Topics
 //TODO ADD_HIGHLIGHT:
 // - option to delete highlights

@@ -17,6 +17,150 @@ const mapStateToProps = state => {
            currentTopic: state.articleReducers.currentTopic };
 }
 
+const processHighlights = highlights => {
+  /* highlights: sorted (by start) list of highlights {start, end, topic}*/
+  /*return processedhighlights of new {start, end, topics}*/
+  var parsedHighlights = [];
+  var final = [];
+  var temp_index = 0;
+  var beginning = {type: 'start', index: 0, topic: [], source: []};
+  parsedHighlights.push(beginning);
+  while (temp_index < highlights.length) {
+    var i = highlights[temp_index];
+    var start = {type: 'start', index: i.start, topic: i.topic, source: i};
+    var end = {type: 'end', index: i.end, topic: i.topic, source: i};
+    parsedHighlights.push(start);
+    parsedHighlights.push(end);
+    temp_index += 1;
+  }
+
+  /* sort by beginning index value, check if it works or not*/
+  parsedHighlights.sort((a,b) => {
+    return a.index - b.index;
+  });
+  console.log(parsedHighlights)
+  /* If active, then highlight should be applied to span */
+  var activeSources = [];
+  var activeTopic1 = false;
+  var activeTopic2 = false;
+  var activeTopic3 = false;
+  var activeTopic4 = false;
+  var start = 0;
+  var end = 0;
+  temp_index = 0;
+  while (temp_index < parsedHighlights.length) {
+    /* If any topic is active, then span will be generated */
+    var i = parsedHighlights[temp_index];
+    //if (activeTopic1 || activeTopic2 || activeTopic3 || activeTopic4) {
+      console.log('Making processed highlights')
+      var processed = {start: null, end: null, topics: [], source: []};
+      console.log(processed)
+      if (i.type === 'start') {
+        processed.start = start;
+        processed.end = i.index;
+        start = i.index;
+      }
+      if (i.type === 'end') {
+        processed.start = start;
+        processed.end = i.index;
+        start = i.index;
+      }
+
+      processed.source = activeSources;
+      if (activeTopic1) {
+        processed.topics.push('topic1');
+      }
+      if (activeTopic2) {
+        processed.topics.push('topic2');
+      }
+      if (activeTopic3) {
+        processed.topics.push('topic3');
+      }
+      if (activeTopic4) {
+        processed.topics.push('topic4');
+      }
+      final.push(processed);
+    //}
+    console.log(activeTopic1);
+    console.log(activeTopic2);
+    console.log(activeTopic3);
+    console.log(activeTopic4);
+
+    /* Update active topics */
+    /* start = activate topics */
+    if (i.type === 'start') {
+      activeSources.push(i.source);
+      if (i.topic === '1') {
+        activeTopic1 = true;
+      } else if (i.topic === '2') {
+        activeTopic2 = true;
+      } else if (i.topic === '3') {
+        activeTopic3 = true;
+      } else if (i.topic === '4') {
+        activeTopic4 = true;
+      }
+    }
+    /* end = deactivate topics */
+    if (i.type === 'end') {
+      activeSources.pop(i.source);
+      if (i.topic === '1') {
+        activeTopic1 = false;
+      } else if (i.topic === '2') {
+        activeTopic2 = false;
+      } else if (i.topic === '3') {
+        activeTopic3 = false;
+      } else if (i.topic === '4') {
+        activeTopic4 = false;
+      }
+    }
+    temp_index += 1;
+  }
+
+  console.log('final')
+  console.log(final);
+  /* [{start:, end:, topics:, source:}]*/
+  return final;
+}
+
+const mergeColors = topics =>  {
+  var list = [];
+  var index = 0;
+  while (index < topics.length) {
+    console.log('topics: ' + topics[index]);
+    switch (topics[index]) {
+      case ('topic1'):
+        list.push('rgb(241, 96, 97)');
+        break;
+      case ('topic2'):
+        list.push('rgb(253, 212, 132)');
+        break;
+      case ('topic3'):
+        list.push('rgb(175, 215, 146)');
+        break;
+      case ('topic4'):
+        list.push('rgb(168, 210, 191)');
+        break;
+    }
+    index = index + 1;
+  }
+  var fraction = 1 / list.length;
+  var red = 0;
+  var blue = 0;
+  var green = 0;
+  index = 0;
+  while (index < list.length) {
+    var rgb = list[index].replace(/[^\d,]/g, '').split(',');
+    red += fraction * Number(rgb[0]);
+    green += fraction * Number(rgb[1]);
+    blue += fraction * Number(rgb[2]);
+    index+=1;
+  }
+  if (list.length == 0) {
+    return 'rgb(255, 255, 255)';
+  }
+  return 'rgb(' + Math.round(red) + ', ' + Math.round(green) + ', ' + Math.round(blue) +' )';
+}
+
 const Article = React.createClass({
   displayName: 'Article',
 
@@ -70,114 +214,6 @@ const Article = React.createClass({
     }
   },
 
-  processHighlights: function(highlights) {
-    /* highlights: sorted (by start) list of highlights {start, end, topic}*/
-    /*return processedhighlights of new {start, end, topics}*/
-    var parsedHighlights = [];
-    var processHighlights = [];
-    for (i in highlights) {
-      start = {"type": "start", "index": i.start, "topic": i.topic, "source": i};
-      end = {"type": "end", "index": i.end, "topic": i.topic, "source": i};
-      parsedHighlights.append(start);
-      parsedHighlights.append(end);
-    }
-    /* sort by beginning index value, check if it works or not*/
-    parsedHighlights.sort((a,b) => {
-      if (a.index === b.index) {
-        return 0;
-      } else if (a.index < b.index) {
-        return -1;
-      } else {
-        return 1;
-      }
-    });
-    activeSources = [];
-    activeTopic1 = false;
-    activeTopic2 = false;
-    activeTopic3 = false;
-    activeTopic4 = false;
-    start = 0;
-    for (i in parsedHighlights) {
-      if (activeTopic1 || activeTopic2 || activeTopic3 || activeTopic4) {
-        var processed = {"start": -1, "end": -1, "topics": [], "source": []};
-        processed.start = start;
-        processed.end = i.start;
-        processed.source = activeSources;
-        if (activeTopic1) {
-          processed.topics.append("topic1");
-        }
-        if (activeTopic2) {
-          processed.topics.append("topic2");
-        }
-        if (activeTopic3) {
-          processed.topics.append("topic3");
-        }
-        if (activeTopic4) {
-          processed.topics.append("topic4");
-        }
-        processedHighlights.append(processed);
-      }
-      start = i.start;
-      /* Update active topics */
-      if (i.type === "start") {
-        activeSources.append(i.source);
-        switch(i.topic) {
-          case("topic1"):
-            activeTopic1 = true;
-          case("topic2"):
-            activeTopic2 = true;
-          case("topic3"):
-            activeTopic3 = true;
-          case("topic4"):
-            activeTopic4 = true;
-        }
-      }
-      if (i.type === "end") {
-        activeSources.remove(i.source);
-        switch(i.topic) {
-          case("topic1"):
-            activeTopic1 = false;
-          case("topic2"):
-            activeTopic2 = false;
-          case("topic3"):
-            activeTopic3 = false;
-          case("topic4"):
-            activeTopic4 = false;
-        }
-      }
-    }
-    return processedHighlights;
-  }
-
-  mergeColors: function(topics) {
-    var list = []
-    /* list is a list of rgb colors*/
-    /* may need a more flexible way of add topic colors */
-    for (i in topics) {
-      switch(i) {
-        case "topic1":
-          list.append(rgb(241,96,97));
-        case "topic2":
-          list.append(rgb(253,212,132));
-        case "topic3":
-          list.append(rgb(175,215,146));
-        case "topics4":
-          list.append(rgb(168,210,191));
-      }
-    }
-    var colors = len(list);
-    var fraction = 1/colors
-    var red = 0;
-    var blue = 0;
-    var green = 0;
-    for (i in list) {
-      red += fraction*i.getRed();
-      green += fraction*i.getGreen();
-      blue += fraction*i.getBlue();
-    }
-    return rgb(red, green, blue)
-  },
-
   render() {
     const {topic_id}: string = this.context.params
     let topic = this.props.topics[topic_id];
@@ -185,7 +221,9 @@ const Article = React.createClass({
     var text = this.props.article.text;
     /* replace this.props.article with processHighlights(this.props.highlights)*/
     /*var highlights = this.props.highlights || [];*/
-    var highlights = processedHighlights(this.props.highlights) || [];
+    console.log(this.props.highlights)
+    var highlights = processHighlights(this.props.highlights) || [];
+    console.log(highlights)
 
     var start = 0;
     var tail = '';
@@ -216,10 +254,9 @@ const Article = React.createClass({
               return (<span key={i}
 
                             // new
-                            style={{background-color: mergeColors(curHL.topics)}}
+                            style={{backgroundColor: mergeColors(curHL.topics)}}
                             source={curHL.source}
                             // new
-                            className={'highlighted topic' /*+ curHL.topic*/}
                       >{text.substring(curHL.start, curHL.end)}</span>);
             }
           })}
