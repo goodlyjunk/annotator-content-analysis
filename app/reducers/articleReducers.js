@@ -1,4 +1,5 @@
 import { ADD_HIGHLIGHT,
+         DELETE_HIGHLIGHT,
          NEW_ARTICLE,
          ACTIVATE_TOPIC } from '../actions/actionTypes';
 import api from '../api.js';
@@ -26,7 +27,7 @@ function mergeHighlights(list) {
     for (var j = i + 1; j < n; j++) {
       if (list[i].end >= list[j].start) {
         newrange.text += list[j].text.substring(
-          Math.min(newrange.end, list[j].end) - list[j].start, list[j].end
+          Math.min(newrange.end, list[j].end) - list[j].start, list[j].text.length
         );
         newrange.end = Math.max(list[j].end, newrange.end);
         continue;
@@ -42,6 +43,7 @@ function mergeHighlights(list) {
 
 export default function articleReducer(state = initialState, action) {
   switch (action.type) {
+
     case ADD_HIGHLIGHT:
       var newHighlights = state.highlights.concat(
         { start: action.selection.start,
@@ -70,6 +72,11 @@ export default function articleReducer(state = initialState, action) {
                                         curArticle: state.curArticle + 1 });
     case ACTIVATE_TOPIC:
       return Object.assign({}, state, { currentTopic: action.topic });
+    case DELETE_HIGHLIGHT:
+      var index = state.highlights.indexOf(action.highlight);
+      var arr1 = state.highlights.slice(0, index);
+      var arr2 = state.highlights.slice(index + 1);
+      return Object.assign({}, state, { highlights: arr1.concat(arr2) });
     default:
       return state;
   }

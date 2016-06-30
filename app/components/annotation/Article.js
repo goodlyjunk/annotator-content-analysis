@@ -1,6 +1,7 @@
 import React from 'react';
-import { addHighlight } from 'actions/actions';
+import { addHighlight, deleteHighlight } from 'actions/actions';
 import { connect } from 'react-redux';
+import jquery from 'jquery';
 
 import 'Article.scss';
 
@@ -8,6 +9,9 @@ const mapDispatchToProps = dispatch => {
   return {
     onHighlight: (start, end, selectedText) => {
       dispatch(addHighlight(start, end, selectedText));
+    },
+    removeHighlight: (highlight) => {
+      dispatch(deleteHighlight(highlight));
     }
   };
 }
@@ -28,8 +32,14 @@ const Article = React.createClass({
     article: React.PropTypes.object.isRequired,
     topics: React.PropTypes.array.isRequired,
     onHighlight: React.PropTypes.func,
+    removeHighlight: React.PropTypes.func,
+    selectedHighlight: React.PropTypes.object,
     highlights: React.PropTypes.array,
     currentTopic: React.PropTypes.string
+  },
+
+  getInitialState: function() {
+    return { selectedHighlight: null };
   },
 
   getOffset: function(childNodes, targetNode) {
@@ -70,6 +80,37 @@ const Article = React.createClass({
     }
   },
 
+  componentDidMount: function() {
+    // unsure if jquery is necessary to mount keypress handler
+    // but this is what I found and it seems to work
+    var $ = jquery;
+    $(document.body).on('keydown', this.handleKeyDown);
+  },
+
+  componentWillUnmount: function() {
+    var $ = jquery;
+    $(document.body).off('keydown', this.handleKeyDown);
+  },
+
+  handleKeyDown: function(e) {
+    if (e.keyCode === 8 || e.keyCode === 46) {
+      e.preventDefault();
+      if (this.state.selectedHighlight) {
+        this.props.removeHighlight(this.state.selectedHighlight);
+      }
+    }
+  },
+
+  selectHighlight: function(highlight) {
+    if (this.state.selectedHighlight
+      && highlight.start === this.state.selectedHighlight.start
+      && highlight.end === this.state.selectedHighlight.end) {
+      this.setState({ selectedHighlight: null });
+    } else {
+      this.setState({ selectedHighlight: highlight });
+    }
+  },
+
   render() {
     const {topic_id}: string = this.context.params
     let topic = this.props.topics[topic_id];
@@ -100,9 +141,20 @@ const Article = React.createClass({
               return (<span key={i}>{text.substring(start, curHL.start)}</span>);
             } else {
               // render highlight
+              // might want to create general method to check for object equality
               start = curHL.end;
+              var classStr = 'highlighted';
+              if (this.state.selectedHighlight
+                && curHL.start === this.state.selectedHighlight.start
+                && curHL.end === this.state.selectedHighlight.end) {
+                classStr += ' selected' + this.state.selectedHighlight.topic;
+              } else {
+                classStr += ' topic' + curHL.topic;
+              }
+
               return (<span key={i}
-                            className={'highlighted topic' + curHL.topic}
+                            onClick={ () => { this.selectHighlight(curHL) } }
+                            className={ classStr }
                       >{text.substring(curHL.start, curHL.end)}</span>);
             }
           })}
