@@ -1,6 +1,7 @@
 import React from 'react';
 import { addHighlight } from 'actions/actions';
 import { connect } from 'react-redux';
+import jquery from 'jquery';
 
 import 'Article.scss';
 
@@ -17,150 +18,6 @@ const mapStateToProps = state => {
            currentTopic: state.articleReducers.currentTopic };
 }
 
-const processHighlights = highlights => {
-  /* highlights: sorted (by start) list of highlights {start, end, topic}*/
-  /*return processedhighlights of new {start, end, topics}*/
-  var parsedHighlights = [];
-  var final = [];
-  var temp_index = 0;
-  var beginning = {type: 'start', index: 0, topic: [], source: []};
-  parsedHighlights.push(beginning);
-  while (temp_index < highlights.length) {
-    var i = highlights[temp_index];
-    var start = {type: 'start', index: i.start, topic: i.topic, source: i};
-    var end = {type: 'end', index: i.end, topic: i.topic, source: i};
-    parsedHighlights.push(start);
-    parsedHighlights.push(end);
-    temp_index += 1;
-  }
-
-  /* sort by beginning index value, check if it works or not*/
-  parsedHighlights.sort((a,b) => {
-    return a.index - b.index;
-  });
-  console.log(parsedHighlights)
-  /* If active, then highlight should be applied to span */
-  var activeSources = [];
-  var activeTopic1 = false;
-  var activeTopic2 = false;
-  var activeTopic3 = false;
-  var activeTopic4 = false;
-  var start = 0;
-  var end = 0;
-  temp_index = 0;
-  while (temp_index < parsedHighlights.length) {
-    /* If any topic is active, then span will be generated */
-    var i = parsedHighlights[temp_index];
-    //if (activeTopic1 || activeTopic2 || activeTopic3 || activeTopic4) {
-      console.log('Making processed highlights')
-      var processed = {start: null, end: null, topics: [], source: []};
-      console.log(processed)
-      if (i.type === 'start') {
-        processed.start = start;
-        processed.end = i.index;
-        start = i.index;
-      }
-      if (i.type === 'end') {
-        processed.start = start;
-        processed.end = i.index;
-        start = i.index;
-      }
-
-      processed.source = activeSources;
-      if (activeTopic1) {
-        processed.topics.push('topic1');
-      }
-      if (activeTopic2) {
-        processed.topics.push('topic2');
-      }
-      if (activeTopic3) {
-        processed.topics.push('topic3');
-      }
-      if (activeTopic4) {
-        processed.topics.push('topic4');
-      }
-      final.push(processed);
-    //}
-    console.log(activeTopic1);
-    console.log(activeTopic2);
-    console.log(activeTopic3);
-    console.log(activeTopic4);
-
-    /* Update active topics */
-    /* start = activate topics */
-    if (i.type === 'start') {
-      activeSources.push(i.source);
-      if (i.topic === '1') {
-        activeTopic1 = true;
-      } else if (i.topic === '2') {
-        activeTopic2 = true;
-      } else if (i.topic === '3') {
-        activeTopic3 = true;
-      } else if (i.topic === '4') {
-        activeTopic4 = true;
-      }
-    }
-    /* end = deactivate topics */
-    if (i.type === 'end') {
-      activeSources.pop(i.source);
-      if (i.topic === '1') {
-        activeTopic1 = false;
-      } else if (i.topic === '2') {
-        activeTopic2 = false;
-      } else if (i.topic === '3') {
-        activeTopic3 = false;
-      } else if (i.topic === '4') {
-        activeTopic4 = false;
-      }
-    }
-    temp_index += 1;
-  }
-
-  console.log('final')
-  console.log(final);
-  /* [{start:, end:, topics:, source:}]*/
-  return final;
-}
-
-const mergeColors = topics =>  {
-  var list = [];
-  var index = 0;
-  while (index < topics.length) {
-    console.log('topics: ' + topics[index]);
-    switch (topics[index]) {
-      case ('topic1'):
-        list.push('rgb(241, 96, 97)');
-        break;
-      case ('topic2'):
-        list.push('rgb(253, 212, 132)');
-        break;
-      case ('topic3'):
-        list.push('rgb(175, 215, 146)');
-        break;
-      case ('topic4'):
-        list.push('rgb(168, 210, 191)');
-        break;
-    }
-    index = index + 1;
-  }
-  var fraction = 1 / list.length;
-  var red = 0;
-  var blue = 0;
-  var green = 0;
-  index = 0;
-  while (index < list.length) {
-    var rgb = list[index].replace(/[^\d,]/g, '').split(',');
-    red += fraction * Number(rgb[0]);
-    green += fraction * Number(rgb[1]);
-    blue += fraction * Number(rgb[2]);
-    index+=1;
-  }
-  if (list.length == 0) {
-    return 'rgb(255, 255, 255)';
-  }
-  return 'rgb(' + Math.round(red) + ', ' + Math.round(green) + ', ' + Math.round(blue) +' )';
-}
-
 const Article = React.createClass({
   displayName: 'Article',
 
@@ -174,6 +31,120 @@ const Article = React.createClass({
     onHighlight: React.PropTypes.func,
     highlights: React.PropTypes.array,
     currentTopic: React.PropTypes.string
+  },
+
+  /*
+  Domain: current stored highlight objects
+  Range: highlight-like objects that describe each text span
+
+  1. Takes the current highlights and breaks each into a start and end object,
+  2. sorts the objects by their index in the text,
+  3. creates a new highlight-like object for each segment between objects. These
+  objects will describe the spans that the render function creates. Each will have
+  its own combination of topics according to its overlap,
+  4. activates or deactivates topics based on whether the object describes the
+  start of a highlight or the end of one
+  5. returns a list of span-objects with the same properties as highlight, which is passed
+  into render.
+
+  No alterations were made to render or to the article reducer - all
+  this method does is reinterpret stored highlights so that render returns
+  distinct spans that appear to be overlapping
+  */
+  processHighlights: function(highlights) {
+    var parsedHighlights = [];
+    var final = [];
+    var temp_index = 0;
+    var beginning = {type: 'start', index: 0, topic: [], source: []};
+    parsedHighlights.push(beginning);
+    while (temp_index < highlights.length) {
+      var i = highlights[temp_index];
+      var start = {type: 'start', index: i.start, topic: i.topic, source: i};
+      var end = {type: 'end', index: i.end, topic: i.topic, source: i};
+      parsedHighlights.push(start);
+      parsedHighlights.push(end);
+      temp_index += 1;
+    }
+    parsedHighlights.sort((a,b) => {
+      return a.index - b.index;
+    });
+    var activeSources = [];
+    var activeTopics = [false, false, false, false];
+    var topic_list = ['topic1', 'topic2', 'topic3', 'topic4'];
+    var start = 0;
+    var end = 0;
+    temp_index = 0;
+    while (temp_index < parsedHighlights.length) {
+      var i = parsedHighlights[temp_index];
+      var processed = {start: null, end: null, topics: [], source: []};
+      processed.start = start;
+      processed.end = i.index;
+      start = i.index;
+      processed.source = activeSources;
+      var list_index = 0;
+      while (list_index < activeTopics.length) {
+        if (activeTopics[list_index]) {
+          processed.topics.push(topic_list[list_index]);
+        }
+        list_index += 1;
+      }
+      final.push(processed);
+      var active_state = i.type === 'start'
+      if (i.topic === '1') {
+        activeTopics[0] = active_state;
+      } else if (i.topic === '2') {
+        activeTopics[1] = active_state;
+      } else if (i.topic === '3') {
+        activeTopics[2] = active_state;
+      } else if (i.topic === '4') {
+        activeTopics[3] = active_state;
+      }
+      temp_index += 1;
+    }
+    return final;
+  },
+  /*
+  Domain: List of Topics
+  Range: String RGB
+
+  From list of topics, gathers
+  */
+  mergeColors: function(topics) {
+    var list = [];
+    var index = 0;
+    while (index < topics.length) {
+      switch (topics[index]) {
+        case ('topic1'):
+          list.push('rgb(241, 96, 97)');
+          break;
+        case ('topic2'):
+          list.push('rgb(253, 212, 132)');
+          break;
+        case ('topic3'):
+          list.push('rgb(175, 215, 146)');
+          break;
+        case ('topic4'):
+          list.push('rgb(168, 210, 191)');
+          break;
+      }
+      index = index + 1;
+    }
+    var fraction = 1 / list.length;
+    var red = 0;
+    var blue = 0;
+    var green = 0;
+    index = 0;
+    while (index < list.length) {
+      var rgb = list[index].replace(/[^\d,]/g, '').split(',');
+      red += fraction * Number(rgb[0]);
+      green += fraction * Number(rgb[1]);
+      blue += fraction * Number(rgb[2]);
+      index+=1;
+    }
+    if (list.length == 0) {
+      return 'rgb(255, 255, 255)';
+    }
+    return 'rgb(' + Math.round(red) + ', ' + Math.round(green) + ', ' + Math.round(blue) +' )';
   },
 
   getOffset: function(childNodes, targetNode) {
@@ -221,9 +192,7 @@ const Article = React.createClass({
     var text = this.props.article.text;
     /* replace this.props.article with processHighlights(this.props.highlights)*/
     /*var highlights = this.props.highlights || [];*/
-    console.log(this.props.highlights)
-    var highlights = processHighlights(this.props.highlights) || [];
-    console.log(highlights)
+    var highlights = this.processHighlights(this.props.highlights) || [];
 
     var start = 0;
     var tail = '';
@@ -253,10 +222,8 @@ const Article = React.createClass({
               start = curHL.end;
               return (<span key={i}
 
-                            // new
-                            style={{backgroundColor: mergeColors(curHL.topics)}}
+                            style={{backgroundColor: this.mergeColors(curHL.topics)}}
                             source={curHL.source}
-                            // new
                       >{text.substring(curHL.start, curHL.end)}</span>);
             }
           })}
