@@ -134,7 +134,7 @@ const Article = React.createClass({
           Focus on the bold text about '{topic.name}' and answer the questions.
         </div>
         <div ref={(ref) => this.articleRef = ref} className='article' onClick={this.handleClick}>
-          {Array(highlights.length * 2).fill().map((_,i) => {
+          {Array(highlights.length * 2).fill().map((_, i) => {
             var curHL = highlights[i / 2 | 0];
             if (i % 2 === 0) {
               // render normal text
