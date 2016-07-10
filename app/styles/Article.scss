@@ -19,8 +19,7 @@
     transition: opacity $transition-slow;
 
     .highlighted {
-      // TODO: generate programmatically?
-      // TODO: NEED TO BE ABLE TO RUN COLORBLENDER EASILY 
+
       background-color: $red_accent;
       &.topic1 {
         background-color: $red_accent;

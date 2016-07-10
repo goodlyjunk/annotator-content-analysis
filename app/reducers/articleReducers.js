@@ -1,4 +1,6 @@
 import { ADD_HIGHLIGHT,
+        DELETE_HIGHLIGHT,
+        SELECT_HIGHLIGHT,
          NEW_ARTICLE,
          ACTIVATE_TOPIC } from '../actions/actionTypes';
 import api from '../api.js';
@@ -13,6 +15,7 @@ function getInitialState() {
 const initialState = Object.assign({
   articles: [],
   highlights: [],
+  selectedHighlight: [],
   // TODO: somehow track what the user's seen in their sessions not just count
   curArticle: 0,
 }, getInitialState());
@@ -58,6 +61,7 @@ function mergeHighlights(list) {
 export default function articleReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_HIGHLIGHT:
+      //console.log('Highlight')
       var newHighlights = state.highlights.concat(
         { start: action.selection.start,
           end: action.selection.end,
@@ -82,9 +86,48 @@ export default function articleReducer(state = initialState, action) {
                                           curArticle: 0 });
       }
       return Object.assign({}, state, { highlights: [],
-                                      curArticle: state.curArticle + 1 });
+                                      curArticle: state.curArticle + 1,});
     case ACTIVATE_TOPIC:
       return Object.assign({}, state, { currentTopic: action.topic });
+    case SELECT_HIGHLIGHT:
+      /*Add start-end indices of clicked span to selectedHighlights
+      The indices are used in render to 'select' and darken the span*/
+      var select = action.highlights;
+      var indices = [];
+      var i = 0;
+      while (i < select.length) {
+        var start = select[i].start;
+        var end = select[i].end;
+        indices.push([start, end])
+        i += 1;
+      }
+      return Object.assign({}, state, { selectedHighlight: indices });
+    case DELETE_HIGHLIGHT:
+      /*Remove selected highlights in state.highlights using the
+      indices from selectedHighlights. Also reset selectedHighlights*/
+      var new_state = state.highlights;
+      var new_list = [];
+      var indices = [];
+      var stateindex = 0;
+      while (stateindex < state.highlights.length) {
+        var actionindex = 0;
+        var pushbool = true;
+        while (actionindex < action.highlights.length) {
+          var a_h = action.highlights[actionindex];
+          // Highlight to be deleted
+          var s_h = state.highlights[stateindex];
+          //Current highlights
+          if (a_h[0] == s_h.start && a_h[1] == s_h.end){
+            pushbool = false;
+          }
+          actionindex += 1;
+        }
+        if (pushbool) {
+          new_list.push(s_h);
+        }
+        stateindex += 1;
+      }
+      return Object.assign({}, state, { highlights: new_list, selectedHighlight: []});
     default:
       return state;
   }

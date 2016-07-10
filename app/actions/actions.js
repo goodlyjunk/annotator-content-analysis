@@ -4,8 +4,12 @@ export function addHighlight(start, end, selectedText) {
   return { type: types.ADD_HIGHLIGHT, selection: {start, end, selectedText} };
 }
 
-export function deleteHighlight(highlight) {
-  return { type: types.DELETE_HIGHLIGHT, highlight: highlight };
+export function deleteHighlight(source) {
+  return { type: types.DELETE_HIGHLIGHT, highlights: source };
+}
+
+export function selectHighlight(source) {
+  return { type: types.SELECT_HIGHLIGHT, highlights: source };
 }
 
 export function activateTopic(topic) {
