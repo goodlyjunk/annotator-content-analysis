@@ -61,7 +61,6 @@ function mergeHighlights(list) {
 export default function articleReducer(state = initialState, action) {
   switch (action.type) {
     case ADD_HIGHLIGHT:
-      //console.log('Highlight')
       var newHighlights = state.highlights.concat(
         { start: action.selection.start,
           end: action.selection.end,

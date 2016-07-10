@@ -208,7 +208,7 @@ const Article = React.createClass({
     }
     var opacity = 0.4;
     if (selected) {
-      opacity = 1.5;
+      opacity = 1;
     }
     if (list.length == 0) {
       return 'rgba(255, 255, 255, 0)';
@@ -266,83 +266,24 @@ const Article = React.createClass({
     $(document.body).off('keydown', this.handleKeyDown);
   },
 
-  /*handleClick: function() {
-    console.log('click')
-    this.setState({selectedHighlight: this.source});
-    console.log(this.source)
-  },*/
-
   handleKeyDown: function(e) {
-    console.log('handlekeydown');
-    console.log(e);
     if (e.keyCode == 8 || e.keyCode == 46) {
-      console.log('delete detected');
       e.preventDefault();
       if (this.props.selectedHighlight) {
-        console.log(this.props.selectedHighlight)
         this.props.onDeleteHighlight(this.props.selectedHighlight);
       }
     }
   },
 
-
-  /*selectHighlight: function(highlight) {
-    this.props.onSelectHighlight(highlight);
-    if (this.state.selectedHighlight
-      && highlight.start === this.state.selectedHighlight.start
-      && highlight.end === this.state.selectedHighlight.end) {
-      this.setState({ selectedHighlight: null });
-    } else {
-      this.setState({ selectedHighlight: highlight });
-    }
-  },*/
-
-  //Only one selected
-  //Click on anything else and deselects
-  //when selected changes color
-  //when selected, keydown of delete detected and that highlight
-  // is also deleted
-
-  //when span clicked, handleSelect is called, color changes
-  //if delete is pressed nexted, the highlight is deleted
-  //if anything else selected, either the select changes to the new or is
-  // by default changed to None
-
   handleSelect: function(source, e) {
-    // can darken pretty easily
-    //this.state.props.setState({selectedHighlight: e.currentTarget.props.source});
     this.props.onSelectHighlight(source)
   },
 
-  /*handleDefault: function() {
-    this.setState({selectedHighlight: []});
-  },*/
-
-
-  /*checkSelect: function(select, source):
-    var bool = false;
-    if (s != null) {
-      var selected_index = 0;
-      while (selected_index < select.length) {
-        var source_index = 0;
-        while (source_index < source.length) {
-          if (select[selected_index] == source[source_index]){
-            bool = true;
-            return bool;
-          }
-        }
-      }
-      return bool;
-    },*/
-
   render() {
-    console.log('re-rendered')
     const {topic_id}: string = this.context.params
     let topic = this.props.topics[topic_id];
 
     var text = this.props.article.text;
-    /* replace this.props.article with processHighlights(this.props.highlights)*/
-    /*var highlights = this.props.highlights || [];*/
     var highlights = this.processHighlights(this.props.highlights) || [];
 
     var start = 0;
@@ -368,11 +309,6 @@ const Article = React.createClass({
               return (<span key={i}>{text.substring(start, curHL.start)}</span>);
             } else {
               start = curHL.end;
-
-              // if there is a topic, then can be selected
-              /*console.log('sources 1');
-              console.log(curHL.source);*/
-              console.log(curHL.source);
               return (<span key={i}
                             source = {curHL.source}
                             onClick={this.handleSelect.bind(this, curHL.source)}
