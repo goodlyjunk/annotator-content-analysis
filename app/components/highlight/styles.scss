@@ -1,0 +1,14 @@
+@import 'app/containers/App/styles/_mixins.scss';
+@import 'app/containers/App/styles/_variables.scss';
+
+.text-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  /* Make selection not span the whole page, just this div */
+  position: relative;
+
+  .article {
+    @include newspaper;
+    transition: opacity $transition-slow;
+  }
+}

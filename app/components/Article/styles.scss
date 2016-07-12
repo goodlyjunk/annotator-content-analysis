@@ -1,11 +1,11 @@
 @import 'app/containers/App/styles/_mixins.scss';
 @import 'app/containers/App/styles/_variables.scss';
 
-.text-wrapper {
+/*.text-wrapper {
   max-width: 500px;
-  margin: 0 auto;
+  margin: 0 auto;*/
   /* Make selection not span the whole page, just this div */
-  position: relative;
+  /*position: relative;
 
   .article {
     @include newspaper;
@@ -27,8 +27,8 @@
         background-color: $blue_accent;
       }
     }
-
-    /* react makes this not work */
+*/
+    /* react makes this not work *//*
     &[data-topic="1"]::selection {
       background: $red_accent;
     }
@@ -42,4 +42,4 @@
       background: $blue_accent;
     }
   }
-}
+}*/
