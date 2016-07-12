@@ -39,6 +39,7 @@ const Article = React.createClass({
     currentTopic: React.PropTypes.string,
     selectedHighlight: React.PropTypes.array
   },
+
   /*
   Domain: current stored highlight objects
   Range: highlight-like objects that describe each text span
@@ -212,16 +213,10 @@ const Article = React.createClass({
     return 'rgba(' + Math.round(red) + ', ' + Math.round(green) + ', ' + Math.round(blue) + ', ' + opacity +')';
   },
 
+
   componentDidMount: function() {
     let articleContainer = document.getElementById('article-container');
-
-    var $ = jquery;
-    $(document.body).on('keydown', this.handleKeyDown);
-  },
-
-  componentWillUnmount: function() {
-    var $ = jquery;
-    $(document.body).off('keydown', this.handleKeyDown);
+    this.annotationsObject = new TextHighlighter(articleContainer);
   },
 
   getOffset: function(childNodes, targetNode) {
@@ -256,7 +251,6 @@ const Article = React.createClass({
         start = end;
         end = tmp;
       }
-      console.log(start, end, selectedText);
       if (start !== end) {
         this.props.onHighlight(start, end, selectedText);
       }
@@ -287,6 +281,7 @@ const Article = React.createClass({
   handleSelect: function(source, e) {
     this.props.onSelectHighlight(source)
   },
+
 
   render() {
     // console.log(this.props);
@@ -319,17 +314,7 @@ const Article = React.createClass({
               return (<span key={i}>{text.substring(start, curHL.start)}</span>);
             } else {
               // render highlight
-              // might want to create general method to check for object equality
               start = curHL.end;
-              var classStr = 'highlighted';
-              if (this.state.selectedHighlight
-                && curHL.start === this.state.selectedHighlight.start
-                && curHL.end === this.state.selectedHighlight.end) {
-                classStr += ' selected' + this.state.selectedHighlight.topic;
-              } else {
-                classStr += ' topic' + curHL.topic;
-              }
-
               return (<span key={i}
                             //className={'highlighted topic' + curHL.topic}
                             source = {curHL.source}
