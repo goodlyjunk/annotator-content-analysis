@@ -1,7 +1,7 @@
 # annotator-content-analysis
-Provides an annotation interface for detailed text annotation by crowdworkers along researcher-defined topics of interest.
+An annotation interface for detailed text annotation by crowdworkers along researcher-defined topics of interest.
 
-Built with (react)[https://facebook.github.io/react/] and (redux)[https://github.com/reactjs/redux].
+Built with [React](https://facebook.github.io/react/) and [Redux](https://github.com/reactjs/redux).
 
 ####To setup
 
@@ -11,19 +11,16 @@ From the project directory, run
 npm install
 bower install
 ```
-and
-```
-npm install -g gulp
-```
 
-You might also want the nifty (Redux DevTools)[https://github.com/zalmoxisus/redux-devtools-extension].
+
+You might also want to install Devtools for [React](https://facebook.github.io/react/blog/2015/09/02/new-react-developer-tools.html). For Redux, you can install the [Google Chrome extension](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd) or use the other methods described in at the bottom of [this page](https://github.com/zalmoxisus/redux-devtools-extension) in the README.
 
 ####To develop
 
 Run `npm run dev` from the project dir to build and serve the development app.
 
-The demo with mock data will be available at `http://localhost:3001/app/#/tua/0/topic/0/question/0`
-
 ####To deploy
 
-Run `npm run deploy` and the output files will be written to the `dist` fodler.
+Run `npm run deploy` and the output files will be written to the `dist` folder.
+
+NOTE: this command currently is not fully functional and most likely will not work. Running `npm run dev` instead will show the most recent version of the code.

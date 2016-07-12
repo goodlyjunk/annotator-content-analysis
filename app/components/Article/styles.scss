@@ -1,12 +1,6 @@
-@import 'styleguide';
+@import 'app/containers/App/styles/_mixins.scss';
+@import 'app/containers/App/styles/_variables.scss';
 
-@mixin newspaper {
-  // text-indent: 20px;
-  // Think about em-dashes and more spaces / automatic <p> creation
-  white-space: pre-wrap;
-  line-height: 1.5;
-  font-family: $font-newspaper;
-}
 $darken-highlight: 10%;
 
 .text-wrapper {

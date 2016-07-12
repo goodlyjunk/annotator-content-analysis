@@ -3,7 +3,7 @@ import { addHighlight, deleteHighlight } from 'actions/actions';
 import { connect } from 'react-redux';
 import jquery from 'jquery';
 
-import 'Article.scss';
+import { styles } from './styles.scss';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -17,20 +17,16 @@ const mapDispatchToProps = dispatch => {
 }
 
 const mapStateToProps = state => {
-  return { highlights: state.articleReducers.highlights,
-           currentTopic: state.articleReducers.currentTopic };
+  return { highlights: state.article.highlights,
+           currentTopic: state.article.currentTopic };
 }
 
 const Article = React.createClass({
   displayName: 'Article',
 
-  contextTypes: {
-    params: React.PropTypes.object.isRequired
-  },
 
   propTypes: {
     article: React.PropTypes.object.isRequired,
-    topics: React.PropTypes.array.isRequired,
     onHighlight: React.PropTypes.func,
     removeHighlight: React.PropTypes.func,
     selectedHighlight: React.PropTypes.object,
@@ -40,6 +36,18 @@ const Article = React.createClass({
 
   getInitialState: function() {
     return { selectedHighlight: null };
+  },
+
+  componentDidMount: function() {
+    let articleContainer = document.getElementById('article-container');
+
+    var $ = jquery;
+    $(document.body).on('keydown', this.handleKeyDown);
+  },
+
+  componentWillUnmount: function() {
+    var $ = jquery;
+    $(document.body).off('keydown', this.handleKeyDown);
   },
 
   getOffset: function(childNodes, targetNode) {
@@ -74,22 +82,11 @@ const Article = React.createClass({
         start = end;
         end = tmp;
       }
+      console.log(start, end, selectedText);
       if (start !== end) {
         this.props.onHighlight(start, end, selectedText);
       }
     }
-  },
-
-  componentDidMount: function() {
-    // unsure if jquery is necessary to mount keypress handler
-    // but this is what I found and it seems to work
-    var $ = jquery;
-    $(document.body).on('keydown', this.handleKeyDown);
-  },
-
-  componentWillUnmount: function() {
-    var $ = jquery;
-    $(document.body).off('keydown', this.handleKeyDown);
   },
 
   handleKeyDown: function(e) {
@@ -112,8 +109,9 @@ const Article = React.createClass({
   },
 
   render() {
-    const {topic_id}: string = this.context.params
-    let topic = this.props.topics[topic_id];
+    // console.log(this.props);
+    // const {topic_id}: string = this.context.params
+    // let topic = this.props.topics[topic_id];
 
     var text = this.props.article.text;
     var highlights = this.props.highlights || [];
@@ -131,10 +129,10 @@ const Article = React.createClass({
     return (
       <div className='article'>
         <div className='tua__header-text'>
-          Focus on the bold text about '{topic.name}' and answer the questions.
+          Focus on the bold text about FOO and answer the questions.
         </div>
-        <div ref={(ref) => this.articleRef = ref} className='article' onClick={this.handleClick}>
-          {Array(highlights.length * 2).fill().map((_, i) => {
+        <div ref={(ref) => this.articleRef = ref} id='article-container' className='article' onClick={this.handleClick}>
+          {Array(highlights.length * 2).fill().map((_,i) => {
             var curHL = highlights[i / 2 | 0];
             if (i % 2 === 0) {
               // render normal text
