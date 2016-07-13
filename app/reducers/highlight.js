@@ -3,12 +3,9 @@ import tmpQuestions from '../assets/tmpQuestions.json';
 
 
 const initialState = Object.assign({
-  text: "",
-  topics: [],
   highlights: [],
   selectedHighlight: [],
-  curArticle: null
-}, getInitialState());
+});
 
 function mergeHighlights(list) {
   // TODO: write tests for me

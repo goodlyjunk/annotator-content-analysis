@@ -3,7 +3,7 @@ import { addHighlight, deleteHighlight, selectHighlight } from 'actions/article'
 import { connect } from 'react-redux';
 import jquery from 'jquery';
 import { styles } from './styles.scss';
-import { Highlight } from 'components/highlight/highlight';
+import Highlight from 'components/highlight/highlight';
 //import 'text-highlighter/src/TextHighlighter'
 
 const mapStateToProps = state => {

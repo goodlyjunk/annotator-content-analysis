@@ -1,36 +1,23 @@
 import React from 'react';
-import { addHighlight, deleteHighlight, selectHighlight } from 'actions/highlight';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import jquery from 'jquery';
-import { bindActionCreators } from 'redux';
-import * as HighlightActions from 'actions/highlight'
-//import 'text-highlighter/src/TextHighlighter'
+
+import * as highlightActionCreators from 'actions/highlight'
 
 import { styles } from './styles.scss';
 
-const actions = Object.assign({}, HighlightActions);
-//const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
-/*const mapDispatchToProps = dispatch => {
-  return {
-    onHighlight: (start, end, selectedText) => {
-      dispatch(addHighlight(start, end, selectedText));
-    },
-    onDeleteHighlight: (source) => {
-      dispatch(deleteHighlight(source));
-    },
-    onSelectHighlight: (source) => {
-      dispatch(selectHighlight(source));
-    }
-  };
-}*/
+const assembledActionCreators = Object.assign({}, highlightActionCreators);
 
 const mapStateToProps = state => {
   //originally state.article.highlights
-  return { highlights: state.highlights,
-           currentTopic: state.currentTopic,
-           selectedHighlight: state.selectedHighlight,};
+  return {
+    highlights: state.highlight.highlights,
+    selectedHighlight: state.highlight.selectedHighlight
+  };
 }
-export const Highlight = React.createClass({
+
+const Highlight = React.createClass({
   displayName: 'Highlight',
 
   propTypes: {
@@ -364,6 +351,5 @@ export const Highlight = React.createClass({
 
 export default connect(
   mapStateToProps,
-  dispatch => bindActionCreators(actions, dispatch)
-  //mapDispatchToProps
+  dispatch => bindActionCreators(assembledActionCreators, dispatch)
 )(Highlight);
