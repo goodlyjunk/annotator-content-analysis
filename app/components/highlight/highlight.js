@@ -2,11 +2,15 @@ import React from 'react';
 import { addHighlight, deleteHighlight, selectHighlight } from 'actions/highlight';
 import { connect } from 'react-redux';
 import jquery from 'jquery';
+import { bindActionCreators } from 'redux';
+import * as HighlightActions from 'actions/highlight'
 //import 'text-highlighter/src/TextHighlighter'
 
 import { styles } from './styles.scss';
 
-const mapDispatchToProps = dispatch => {
+const actions = Object.assign({}, HighlightActions);
+//const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
+/*const mapDispatchToProps = dispatch => {
   return {
     onHighlight: (start, end, selectedText) => {
       dispatch(addHighlight(start, end, selectedText));
@@ -18,22 +22,21 @@ const mapDispatchToProps = dispatch => {
       dispatch(selectHighlight(source));
     }
   };
-}
+}*/
 
 const mapStateToProps = state => {
-  return { highlights: state.article.highlights,
-           currentTopic: state.article.currentTopic,
-           selectedHighlight: state.article.selectedHighlight,};
+  //originally state.article.highlights
+  return { highlights: state.highlights,
+           currentTopic: state.currentTopic,
+           selectedHighlight: state.selectedHighlight,};
 }
-
-console.log('creating class')
 export const Highlight = React.createClass({
   displayName: 'Highlight',
 
   propTypes: {
-    onHighlight: React.PropTypes.func.isRequired,
+    /*onHighlight: React.PropTypes.func.isRequired,
     onDeleteHighlight: React.PropTypes.func.isRequired,
-    onSelectHighlight: React.PropTypes.func.isRequired,
+    onSelectHighlight: React.PropTypes.func.isRequired,*/
     text: React.PropTypes.string.isRequired,
     topics: React.PropTypes.array.isRequired,
     highlights: React.PropTypes.array.isRequired,
@@ -62,7 +65,7 @@ export const Highlight = React.createClass({
   distinct spans that appear to be overlapping
   */
 
-  onHighlight: function(start, end, selectedText) {
+  /*onHighlight: function(start, end, selectedText) {
     dispatch(addHighlight(start, end, selectedText));
   },
   onDeleteHighlight: function(source) {
@@ -70,7 +73,7 @@ export const Highlight = React.createClass({
   },
   onSelectHighlight: function(source) {
     dispatch(selectHighlight(source));
-  },
+  },*/
 
   processHighlights: function(highlights) {
     var parsedHighlights = [];
@@ -271,7 +274,9 @@ export const Highlight = React.createClass({
         end = tmp;
       }
       if (start !== end) {
-        this.props.onHighlight(start, end, selectedText);
+        //this.props.dispatch({ type: 'ADD_HIGHLIGHT', selection: {start, end, selectedText} })
+        //this.props.onHighlight(start, end, selectedText);
+        this.props.addHighlight(start, end, selectedText)
         /*onHighlight(start, end, selectedText);*/
       }
     }
@@ -293,13 +298,13 @@ export const Highlight = React.createClass({
     if (e.keyCode == 8 || e.keyCode == 46) {
       e.preventDefault();
       if (this.props.selectedHighlight) {
-        this.props.onDeleteHighlight(this.props.selectedHighlight);
+        this.props.deleteHighlight(this.props.selectedHighlight);
       }
     }
   },
 
   handleSelect: function(source, e) {
-    this.props.onSelectHighlight(source);
+    this.props.selectHighlight(source);
   },
 
 
@@ -359,5 +364,6 @@ export const Highlight = React.createClass({
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  dispatch => bindActionCreators(actions, dispatch)
+  //mapDispatchToProps
 )(Highlight);

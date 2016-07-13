@@ -33,7 +33,7 @@ function mergeHighlights(list) {
   return newlist;
 }
 
-export function article(state = initialState, action) {
+export function highlight(state = initialState, action) {
   switch (action.type) {
     case 'ADD_HIGHLIGHT':
       console.log('ADD_HIGHLIGHT');

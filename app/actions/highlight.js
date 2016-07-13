@@ -3,7 +3,6 @@ export const DELETE_HIGHLIGHT = 'DELETE_HIGHLIGHT';
 export const SELECT_HIGHLIGHT = 'SELECT_HIGHLIGHT';
 
 export function addHighlight(start, end, selectedText) {// NOTE:
-  console.log('called')
   return { type: ADD_HIGHLIGHT, selection: {start, end, selectedText} };
 }
 

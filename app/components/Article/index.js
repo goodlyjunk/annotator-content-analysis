@@ -49,7 +49,36 @@ const Article = React.createClass({
   }
 });
 
+/*<Highlight
+text={this.props.article.text} //Hard copy of text that goes unchanged
+topics={this.props.topics} //Using to adapt merge-colors properly
+currentTopic={this.props.currentTopic} //Needs current from outside
+/>*/
+
+/*<div ref={(ref) => this.articleRef = ref} id='article-container' className='article' onClick={this.handleClick}>
+  {Array(highlights.length * 2).fill().map((_,i) => {
+    var curHL = highlights[i / 2 | 0];
+    if (i % 2 === 0) {
+      // render normal text
+      return (<span key={i}>{text.substring(start, curHL.start)}</span>);
+
+      // could render a highlight component here
+    } else {
+      // render highlight
+      start = curHL.end;
+      return (<span key={i}
+                    //className={'highlighted topic' + curHL.topic}
+                    source = {curHL.source}
+                    onClick={this.handleSelect.bind(this, curHL.source)}
+                    style={{backgroundColor: this.mergeColors(curHL.topics, curHL.selected)}}
+              >{text.substring(curHL.start, curHL.end)}</span>);
+    }
+  })}
+  { tail }
+</div>*/
+
 export default connect(
   mapStateToProps,
-  /*mapDispatchToProps*/
+  null
+  //mapDispatchToProps
 )(Article);
