@@ -1,14 +1,9 @@
-import { NEW_QUESTIONS } from 'actions/article'; // TODO: create new action here
-import tmpQuestions from '../assets/tmpQuestions.json';
-
 
 const initialState = Object.assign({
   highlights: [],
   selectedHighlight: [],
 });
-
 function mergeHighlights(list) {
-  // TODO: write tests for me
   var newlist = [];
   var n = list.length;
   for (var i = 0; i < n;) {
@@ -29,17 +24,15 @@ function mergeHighlights(list) {
   }
   return newlist;
 }
-
 export function highlight(state = initialState, action) {
   switch (action.type) {
     case 'ADD_HIGHLIGHT':
       console.log('ADD_HIGHLIGHT');
-      console.log(action)
       var newHighlights = state.highlights.concat(
         { start: action.selection.start,
           end: action.selection.end,
           text: action.selection.selectedText,
-          topic: state.currentTopic }
+          topic: action.selection.currentTopic }
       ).sort((a,b) => {
         if (a.start === b.start) {
           return 0;
@@ -51,8 +44,8 @@ export function highlight(state = initialState, action) {
       });
       return Object.assign({}, state,
                            { highlights: mergeHighlights(newHighlights) });
-
     case 'SELECT_HIGHLIGHT':
+    console.log('SELECT_HIGHLIGHT');
       /*Add start-end indices of clicked span to selectedHighlights
       The indices are used in render to 'select' and darken the span*/
       var select = action.highlights;
@@ -66,6 +59,7 @@ export function highlight(state = initialState, action) {
       }
       return Object.assign({}, state, { selectedHighlight: indices });
     case 'DELETE_HIGHLIGHT':
+    console.log('DELETE_HIGHLIGHT');
       /*Remove selected highlights in state.highlights using the
       indices from selectedHighlights. Also reset selectedHighlights*/
       var new_state = [];

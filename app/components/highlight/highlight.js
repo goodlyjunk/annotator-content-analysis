@@ -1,29 +1,21 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import jquery from 'jquery';
-
 import * as highlightActionCreators from 'actions/highlight'
-
 import { styles } from './styles.scss';
 
 const assembledActionCreators = Object.assign({}, highlightActionCreators);
 
 const mapStateToProps = state => {
-  //originally state.article.highlights
   return {
     highlights: state.highlight.highlights,
     selectedHighlight: state.highlight.selectedHighlight
-  };
+    };
 }
 
 const Highlight = React.createClass({
   displayName: 'Highlight',
-
   propTypes: {
-    /*onHighlight: React.PropTypes.func.isRequired,
-    onDeleteHighlight: React.PropTypes.func.isRequired,
-    onSelectHighlight: React.PropTypes.func.isRequired,*/
     text: React.PropTypes.string.isRequired,
     topics: React.PropTypes.array.isRequired,
     highlights: React.PropTypes.array.isRequired,
@@ -63,6 +55,8 @@ const Highlight = React.createClass({
   },*/
 
   processHighlights: function(highlights) {
+    console.log('Process Highlights');
+
     var parsedHighlights = [];
     var final = [];
 
@@ -174,10 +168,9 @@ const Highlight = React.createClass({
   */
   /*
   Take topics, find the number, generate that many colors
-
-
   */
   mergeColors: function(topics, selected) {
+    console.log('Merge Colors');
     var list = [];
     var index = 0;
     //Need to adapt code so that more topics can be dynamically added
@@ -194,6 +187,24 @@ const Highlight = React.createClass({
           break;
         case ('topic4'):
           list.push('rgb(168, 210, 191)');
+          break;
+        case ('topic5'): //orange
+          list.push('rgb(255,153,000)');
+          break;
+        case ('topic6'): //purple
+          list.push('rgb(102,000,153)');
+          break;
+        case ('topic7'): //teal
+          list.push('rgb(000,153,153)');
+          break;
+        case ('topic8'): //pink
+          list.push('rgb(255,102,255)');
+          break;
+        case ('topic9'): //dark blue
+          list.push('rgb(000,051,153)');
+          break;
+        case ('topic10'): //magenta
+          list.push('rgb(153,000,204)');
           break;
       }
       index = index + 1;
@@ -220,15 +231,8 @@ const Highlight = React.createClass({
     return 'rgba(' + Math.round(red) + ', ' + Math.round(green) + ', ' + Math.round(blue) + ', ' + opacity +')';
   },
 
-
-  componentDidMount: function() {
-    let articleContainer = document.getElementById('highlight-wrapper');
-    /*this.annotationsObject = new TextHighlighter(articleContainer);*/
-  },
-
   getOffset: function(childNodes, targetNode) {
-    // since we're splitting <Article> into <span>s we'll need to find which <span>
-    // anchorOffset is referring to, and find that offset from the start of <Article>
+    console.log('Offset');
     var offset = 0;
     for (var i in childNodes) {
       var childNode = childNodes[i];
@@ -242,8 +246,8 @@ const Highlight = React.createClass({
   },
 
   handleClick: function() {
-    console.log('handleClick');
-    console.log(this.props)
+    console.log('HandleClick');
+    var currentTopic = this.props.currentTopic;
     var selectionObj = window.getSelection();
     if (selectionObj) {
       let selectedText = selectionObj.toString();
@@ -261,81 +265,57 @@ const Highlight = React.createClass({
         end = tmp;
       }
       if (start !== end) {
-        //this.props.dispatch({ type: 'ADD_HIGHLIGHT', selection: {start, end, selectedText} })
-        //this.props.onHighlight(start, end, selectedText);
-        this.props.addHighlight(start, end, selectedText)
-        /*onHighlight(start, end, selectedText);*/
+        this.props.addHighlight(start, end, selectedText, currentTopic)
       }
     }
   },
 
   componentDidMount: function() {
-    // unsure if jquery is necessary to mount keypress handler
-    // but this is what I found and it seems to work
-    var $ = jquery;
-    $(document.body).on('keydown', this.handleKeyDown);
-  },
-
-  componentWillUnmount: function() {
-    var $ = jquery;
-    $(document.body).off('keydown', this.handleKeyDown);
+    console.log('Did Mount');
+    document.addEventListener('keydown',this.handleKeyDown);
+    let HighlightContainer = document.getElementById('highlight');
   },
 
   handleKeyDown: function(e) {
+    console.log('HandleKeyDown');
     if (e.keyCode == 8 || e.keyCode == 46) {
-      e.preventDefault();
       if (this.props.selectedHighlight) {
-        this.props.deleteHighlight(this.props.selectedHighlight);
+        if (this.props.selectedHighlight.length > 0) {
+          this.props.deleteHighlight(this.props.selectedHighlight);
+        }
       }
     }
   },
 
   handleSelect: function(source, e) {
+    console.log('HandleSelect');
     this.props.selectHighlight(source);
   },
 
 
   render() {
-    // console.log(this.props);
-    // const {topic_id}: string = this.context.params
-    // let topic = this.props.topics[topic_id];
-
-    console.log('highlight wrapper render')
-    console.log(this.props.text)
-    console.log(this.props)
-
     var text = this.props.text;
     var highlights = this.processHighlights(this.props.highlights) || [];
-
     var start = 0;
     var tail = '';
     var l = highlights.length;
-
     if (l === 0) {
       tail = text;
     } else if (highlights[l - 1].end !== text.length) {
       tail = <span>{text.substring(highlights[l - 1].end, text.length)}</span>;
     }
-
     return (
-      /*<div className='article'>
-        <div className='tua__header-text'>
-          Focus on the bold text about FOO and answer the questions.
-        </div>*/
-
-      <div ref={(ref) => this.articleRef = ref} /* id='article-container' className='article'*/ onClick={this.handleClick}>
+      <div onkeydown={this.handleKeyDown} ref={(ref) => this.articleRef = ref } onClick={this.handleClick}>
         {Array(highlights.length * 2).fill().map((_,i) => {
           var curHL = highlights[i / 2 | 0];
           if (i % 2 === 0) {
             // render normal text
             return (<span key={i}>{text.substring(start, curHL.start)}</span>);
-
-            // could render a highlight component here
           } else {
             // render highlight
             start = curHL.end;
             return (<span key={i}
-                          //className={'highlighted topic' + curHL.topic}
+                          onkeydown={this.handleKeyDown}
                           source = {curHL.source}
                           onClick={this.handleSelect.bind(this, curHL.source)}
                           style={{backgroundColor: this.mergeColors(curHL.topics, curHL.selected)}}

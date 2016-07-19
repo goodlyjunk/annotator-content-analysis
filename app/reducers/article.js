@@ -18,8 +18,6 @@ function getInitialState() {
 }
 
 const initialState = Object.assign({
-  article: [],
-  topics: [],
   highlights: [],
   currentTopic: "none",
   curArticle: null
