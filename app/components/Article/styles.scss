@@ -1,6 +1,8 @@
 @import 'app/containers/App/styles/_mixins.scss';
 @import 'app/containers/App/styles/_variables.scss';
 
+$darken-highlight: 10%;
+
 .text-wrapper {
   max-width: 500px;
   margin: 0 auto;
@@ -14,17 +16,30 @@
     .highlighted {
       // TODO: generate programmatically?
       background-color: $red_accent;
+
       &.topic1 {
         background-color: $red_accent;
+      }
+      &.selected1 {
+        background-color: darken($red_accent, $darken-highlight);
       }
       &.topic2 {
         background-color: $yellow_accent;
       }
+      &.selected2 {
+        background-color: darken($yellow_accent, $darken-highlight);
+      }
       &.topic3 {
         background-color: $green_accent;
       }
+      &.selected3 {
+        background-color: darken($green_accent, $darken-highlight);
+      }
       &.topic4 {
         background-color: $blue_accent;
+      }
+      &.selected4 {
+        background-color: darken($blue_accent, $darken-highlight);
       }
     }
 

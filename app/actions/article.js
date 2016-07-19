@@ -2,9 +2,19 @@ export const ADD_HIGHLIGHT = 'ADD_HIGHLIGHT';
 export const ACTIVATE_TOPIC = 'ACTIVATE_TOPIC';
 export const NEW_QUESTIONS = 'NEW_QUESTIONS';
 export const NEW_ARTICLE = 'NEW_ARTICLE';
+export const DELETE_HIGHLIGHT = 'DELETE_HIGHLIGHT';
+export const SELECT_HIGHLIGHT = 'SELECT_HIGHLIGHT';
 
 export function addHighlight(start, end, selectedText) {
   return { type: ADD_HIGHLIGHT, selection: {start, end, selectedText} };
+}
+
+export function deleteHighlight(source) {
+  return { type: DELETE_HIGHLIGHT, highlights: source };
+}
+
+export function selectHighlight(source) {
+  return { type: SELECT_HIGHLIGHT, highlights: source };
 }
 
 export function activateTopic(topic) {
