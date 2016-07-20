@@ -77,8 +77,8 @@ const Highlight = React.createClass({
     });
 
     var activeSources = [];
-    var activeTopics = [false, false, false, false];
-    var topic_list = ['topic1', 'topic2', 'topic3', 'topic4'];
+    var activeTopics = [false, false, false, false, false, false, false, false, false, false];
+    var topic_list = ['topic1', 'topic2', 'topic3', 'topic4', 'topic5', 'topic6', 'topic7', 'topic8', 'topic9', 'topic10'];
     var activeSelect = false;
     var start = 0;
     var end = 0;
@@ -134,6 +134,18 @@ const Highlight = React.createClass({
         activeTopics[2] = active_state;
       } else if (i.topic === '4') {
         activeTopics[3] = active_state;
+      } else if (i.topic === '5') {
+        activeTopics[4] = active_state;
+      } else if (i.topic === '6') {
+        activeTopics[5] = active_state;
+      } else if (i.topic === '7') {
+        activeTopics[6] = active_state;
+      } else if (i.topic === '8') {
+        activeTopics[7] = active_state;
+      } else if (i.topic === '9') {
+        activeTopics[8] = active_state;
+      } else if (i.topic === '10') {
+        activeTopics[9] = active_state;
       }
 
       // (6) Activate/Deactivate Sources
