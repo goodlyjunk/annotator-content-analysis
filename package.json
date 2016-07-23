@@ -74,7 +74,6 @@
     "dom-anchor-text-position": "^2.0.1",
     "immutable": "^3.7.6",
     "jquery": "^2.2.0",
-    "react-addons-css-transition-group": "^0.14.7",
-    "text-highlighter": "^1.0.2"
+    "react-addons-css-transition-group": "^0.14.7"
   }
 }

@@ -1,4 +1,4 @@
-#How the code in this repo works
+#Overview
 
 Hi! Glad you want to add code to this project. First, a brief overview of what's gone into this repo and some suggestions on how to get started using it.
 
@@ -8,13 +8,9 @@ The section "Uh, where does the code even start?" gives a brief overview. The tw
 
 #Uh, where does the code even start?
 
-The main body of code for the frontend is in the `app` folder. In the `app` folder, `index.js` adds `Router`, the root React component. `Router` uses `routes.js` to decide what component to render for a given route/url. On the initial load, looking at `routes.js` shows that the `App` component from `app.js` is loaded for the route `/`, or at `http://localhost:3001/app/#/`. 
-
-The part of the url after the `#` becomes the route fed into `routes.js`. The route for each `Route` tag is decided by the `path` property. The default url `http://localhost:3001/app/#/topics/0` means that the `App` and `TopicHighlighter` component are both rendered, with `TopicHighlighter` as the child component of `App` and the `0` in the url the `:articleId` parameter for that `Route`. Thus, `/` only renders `App`, while going to `/topics/0` then renders `TopicHighlighter` as the child of the `App` component. The same idea can be applied to the `Quiz` component at the path `/quiz`.
+The main body of code for the frontend is in the `app` folder. Upon first loading, `index.js` adds a `Router` component, which uses `routes.js` to decide what React component to render at its child at specific routes/urls. At `http://localhost:3001/app/#/topics/0`, React renders `TopicHighlighter` as the child of the `App` component. 
 
 When `App` from `app.js` was loaded in `index.js`, it called `configureStore` from `appStore.js`, which set up Redux. This call in turn initializes the reducers, which perform the proper (synchronous for now) API calls from `api.js` to the back end so there's data (currently the news articles) to display. 
-
-The directories in `app` are fairly self-explanatory. `actions` contains the action types and action creators, `components` the React components, `reducers` the Redux reducers, etc.
 
 The backend code is briefly summarized below:
 
@@ -42,7 +38,7 @@ Redux is a framework exceptionally good for building understandable and manageab
 
 A brief overview of the Redux flow: when using Redux, there is a single state for the entire application. **Reducers** return certain parts of the state. When an event is triggered, a JavaScript object, called an **action**, representing the event, is sent to all the reducers. The reducers then, based on the action's **type**, create a new Redux state (as Redux state is immutable), and a new Redux state is assembled. Now that we have a new, complete state, the React components are re-rendered accordingly.
 
-If you want more information, I wrote a hopefully comprehensive guide on React and Redux [here](https://gist.github.com/JasmineDeng/764dcd7be22288fadfe95bc83f051cd8). **[Feedback on the guide/if it's useful would be appreciated]**
+If you want more information, I wrote a hopefully comprehensive guide on React and Redux [here](https://gist.github.com/JasmineDeng/764dcd7be22288fadfe95bc83f051cd8).
 
 ###What's ES6?
 
@@ -62,7 +58,7 @@ Webpack is a module bundler. It takes in a bunch of files (HTML, JavaScript, CSS
 
 The main benefits of Webpack are its powerful hot module reloading (instant updates to React components without refreshing), lazy loading (it only loads what you need), and the efficiency with which it detects, packages, and sends over changes and modules. 
 
-It produces similar results to Grunt and Gulp, but you don't need to write as much code. All the code for Webpack can be found in the `webpack` folder. **[I don't really know how webpack works, so might be unclear. Feed free to edit.]**
+It produces similar results to Grunt and Gulp, but you don't need to write as much code. All the code for Webpack can be found in the `webpack` folder. 
 
 #The backend stack
 
@@ -76,4 +72,10 @@ It produces similar results to Grunt and Gulp, but you don't need to write as mu
 
 I've tried to enumerate all the interesting and useful parts of all the above, so that you can Google the pieces easily. Developer support for this stuff is all great since it's pretty much cutting edge and widely accepted as the way to go. 
 
-The only thing we're not doing which would be great but not possible (Python has too many benefits for research) is isomorphic Redux, which just means the server also is in JavaScript and runs Redux. **[This problem may no longer be an issue?]** 
+The only thing we're not doing which would be great but not possible (Python has too many benefits for research) is isomorphic Redux, which just means the server also is in JavaScript and runs Redux. 
+
+#Additional information
+
+###React Routing 
+
+The part of the url after the `#` becomes the route fed into `routes.js`. The route for each `Route` tag is decided by the `path` property. The default url `http://localhost:3001/app/#/topics/0` means that the `App` and `TopicHighlighter` component are both rendered, with `TopicHighlighter` as the child component of `App` and the `0` in the url the `:articleId` parameter for that `Route`. Thus, `/` only renders `App`, while going to `/topics/0` then renders `TopicHighlighter` as the child of the `App` component. The same idea can be applied to the `Quiz` component at the path `/quiz`.

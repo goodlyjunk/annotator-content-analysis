@@ -25,15 +25,12 @@ You might also want to install Devtools for [React](https://facebook.github.io/r
 
 ####To run the Docker server
 
-Go to the project directory and follow the instructions below:
+Go to the project directory: 
 
-1. Open up the Docker Quickstart Terminal and wait for the machine to start running.
-2. On OSX, run `eval $(docker-machine env default)`.
-3. Run `docker-compose up`.
+1. Run `docker-compose up`.
+2. Run `./init_docker.sh`.
 
-The server should now be up and running. Initialize it by running `./init_docker.sh`. **[Perhaps not necessary to run ./init_docker.sh?]**
-
-After this, you should be able to make your first query.
+Once the containers are seeded, run `docker-compose start`. After this, you should be able to make your first query.
 
 **Note:** If you are setting up Docker a second time, you may want to first remove the database container with `docker-compose rm db`.
 
@@ -41,13 +38,10 @@ After this, you should be able to make your first query.
 
 In the project directory, run `npm run dev` and set up the Docker server as described above to build and serve the development app.
 
-To make your first query:
-
-- Find your Docker machine's ip by running `docker-machine ip default` in the project directory. Let's say it is `192.168.99.100`.
-- Browse to `http://192.168.99.100:5000/api`.
+To make your first query, navigate to `localhost:5000/api`.
 
 ####To deploy
 
 In the project dictory, run `npm run deploy` and set up the Docker server as described above. The output files will be written to the `dist` folder.
 
-**NOTE:** this command currently is not fully functional and most likely will not work. Running `npm run dev` instead will show the most recent version of the code.
+**NOTE:** this command currently currently not fully functional and needs to be upgraded. Running `npm run dev` instead will show the most recent version of the code.
