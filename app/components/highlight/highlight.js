@@ -259,6 +259,8 @@ const Highlight = React.createClass({
 
   handleClick: function() {
     console.log('HandleClick');
+    this.props.deselectHighlight();
+    //document.addEventListener('onclick',this.handleDeselect(event));
     var currentTopic = this.props.currentTopic;
     var selectionObj = window.getSelection();
     if (selectionObj) {
@@ -278,6 +280,7 @@ const Highlight = React.createClass({
       }
       if (start !== end) {
         this.props.addHighlight(start, end, selectedText, currentTopic)
+        this.props.selectHighlight([{'start':start, 'end':end, 'text':selectedText, 'topic':currentTopic }])
       }
     }
   },
@@ -290,6 +293,7 @@ const Highlight = React.createClass({
 
   handleKeyDown: function(e) {
     console.log('HandleKeyDown');
+    e.preventDefault();
     if (e.keyCode == 8 || e.keyCode == 46) {
       if (this.props.selectedHighlight) {
         if (this.props.selectedHighlight.length > 0) {
@@ -299,10 +303,16 @@ const Highlight = React.createClass({
     }
   },
 
-  handleSelect: function(source, e) {
+
+  handleSelect: function(source, e, event) {
     console.log('HandleSelect');
     this.props.selectHighlight(source);
+    event.stopPropagation();
   },
+
+  //Context-Menu code
+
+
 
 
   render() {
@@ -327,9 +337,8 @@ const Highlight = React.createClass({
             // render highlight
             start = curHL.end;
             return (<span key={i}
-                          onkeydown={this.handleKeyDown}
                           source = {curHL.source}
-                          onClick={this.handleSelect.bind(this, curHL.source)}
+                          onClick={this.handleSelect.bind(this, curHL.source, event)}
                           style={{backgroundColor: this.mergeColors(curHL.topics, curHL.selected)}}
                     >{text.substring(curHL.start, curHL.end)}</span>);
           }

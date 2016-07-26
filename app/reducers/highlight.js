@@ -26,6 +26,8 @@ function mergeHighlights(list) {
 }
 export function highlight(state = initialState, action) {
   switch (action.type) {
+    case 'DESELECT_HIGHLIGHT':
+    return Object.assign({}, state, {selectedHighlight:[]});
     case 'ADD_HIGHLIGHT':
       console.log('ADD_HIGHLIGHT');
       var newHighlights = state.highlights.concat(
@@ -49,6 +51,7 @@ export function highlight(state = initialState, action) {
       /*Add start-end indices of clicked span to selectedHighlights
       The indices are used in render to 'select' and darken the span*/
       var select = action.highlights;
+      console.log(action.highlights)
       var indices = [];
       var i = 0;
       while (i < select.length) {

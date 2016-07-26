@@ -25,15 +25,14 @@ const initialState = Object.assign({
 
 export function article(state = initialState, action) {
   switch (action.type) {
-
     case 'ACTIVATE_TOPIC':
       return Object.assign({}, state, { currentTopic: action.topic });
-
     case 'GET_ARTICLE':
       return {
         ...state,
         curArticle: Number(action.articleId)
       }
+    case
     default:
       return state;
   }

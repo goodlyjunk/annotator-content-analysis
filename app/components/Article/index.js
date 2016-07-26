@@ -30,6 +30,8 @@ const Article = React.createClass({
   },
 
   render() {
+    console.log('article')
+    console.log(this.props.highlights)
     return (
       <div className='article'>
         <div className='tua__header-text'>
@@ -40,8 +42,6 @@ const Article = React.createClass({
         text={this.props.article.text} //Hard copy of text that goes unchanged
         topics={this.props.topics} //Using to adapt merge-colors properly
         currentTopic={this.props.currentTopic} //Needs current from outside
-        /*selectedHighlight={[]}
-        highlights={[]}*/
         />
         </div>
       </div>
