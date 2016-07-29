@@ -32,7 +32,6 @@ export function article(state = initialState, action) {
         ...state,
         curArticle: Number(action.articleId)
       }
-    case
     default:
       return state;
   }

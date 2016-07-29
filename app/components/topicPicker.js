@@ -58,7 +58,8 @@ const TopicPicker = React.createClass({
     // though this is arguably much less boilerplate code than react
     var $ = jquery;
     var _this = this;
-
+    console.log('in mount')
+    console.log(this.props.topics)
     function deleteMeSomeday() {
       function activateTopic(topic) {
         $('.topic-picker__nav li').removeClass('active');
@@ -93,11 +94,11 @@ const TopicPicker = React.createClass({
     return (
       <div className='topic-picker topic-picker--left topic-picker--open'>
         <ul className='topic-picker__nav'>
-          { this.props.topicsTmp.map(topic => {
+          { this.props.topics.map(topic => {
             return (
               <li key={topic.id}
                   data-topic={topic.id}
-                  style={{height: 100 / this.props.topicsTmp.length + '%'}}
+                  style={{height: 100 / this.props.topics.length + '%'}}
               >
                 <b>{topic.name}</b>
               </li>
@@ -108,7 +109,7 @@ const TopicPicker = React.createClass({
           <div className='topic-picker__pin-button topic-picker__pin-button--active'>
             <i className='fa fa-thumb-tack fa-lg'></i>
           </div>
-          { this.props.topicsTmp.map(topic => {
+          { this.props.topics.map(topic => {
             return (
               <div key={topic.id} className='topic-wrapper' data-topic={topic.id}>
                 <div className='topic-wrapper__topic'>

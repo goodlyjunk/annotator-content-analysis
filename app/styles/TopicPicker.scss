@@ -1,7 +1,7 @@
 @import 'app/containers/App/styles/_mixins.scss';
 @import 'app/containers/App/styles/_variables.scss';
 
-$topic-picker-nav-width: 25%;
+$topic-picker-nav-width: 42%;
 
 .topic-picker {
   position: fixed;
@@ -37,7 +37,7 @@ $topic-picker-nav-width: 25%;
       transition: background-color $transition-fast;
 
       font-family: $font-ui;
-      font-size: 1.1em;
+      font-size: 0.8em;
       letter-spacing: 2px;
       text-align: center;
       color: $offblack;
@@ -89,6 +89,36 @@ $topic-picker-nav-width: 25%;
         background-color: $blue_accent;
       }
     }
+    li:nth-child(5) {
+      &:hover, &.active {
+        background-color: $orange_accent;
+      }
+    }
+    li:nth-child(6) {
+      &:hover, &.active {
+        background-color: $purple_accent;
+      }
+    }
+    li:nth-child(7) {
+      &:hover, &.active {
+        background-color: $teal_accent;
+      }
+    }
+    li:nth-child(8) {
+      &:hover, &.active {
+        background-color: $pink_accent;
+      }
+    }
+    li:nth-child(9) {
+      &:hover, &.active {
+        background-color: $darkblue_accent;
+      }
+    }
+    li:nth-child(10) {
+      &:hover, &.active {
+        background-color: $magenta_accent;
+      }
+    }
   }
 
   &--left {
@@ -136,7 +166,8 @@ $topic-picker-nav-width: 25%;
 
   &__pin-button {
     margin: 10px;
-    text-align: right;
+    //text-align: right;
+    text-align: left;
   }
 
   &__wrapper {

@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as highlightActionCreators from 'actions/highlight'
-import { styles } from './styles.scss';
+import './styles.scss';
 
 const assembledActionCreators = Object.assign({}, highlightActionCreators);
 
@@ -13,14 +13,16 @@ const mapStateToProps = state => {
     };
 }
 
-const Highlight = React.createClass({
-  displayName: 'Highlight',
+const HighlightModule = React.createClass({
+  displayName: 'HighlightModule',
+
   propTypes: {
     text: React.PropTypes.string.isRequired,
     topics: React.PropTypes.array.isRequired,
     highlights: React.PropTypes.array.isRequired,
     currentTopic: React.PropTypes.string.isRequired,
-    selectedHighlight: React.PropTypes.array.isRequired
+    selectedHighlight: React.PropTypes.array.isRequired,
+    colors: React.PropTypes.array.isRequired,
   },
 
   /*
@@ -55,7 +57,7 @@ const Highlight = React.createClass({
   },*/
 
   processHighlights: function(highlights) {
-    console.log('Process Highlights');
+    console.log('processHighlights');
 
     var parsedHighlights = [];
     var final = [];
@@ -77,8 +79,21 @@ const Highlight = React.createClass({
     });
 
     var activeSources = [];
-    var activeTopics = [false, false, false, false, false, false, false, false, false, false];
-    var topic_list = ['topic1', 'topic2', 'topic3', 'topic4', 'topic5', 'topic6', 'topic7', 'topic8', 'topic9', 'topic10'];
+    // Ditch this implementation it is pretty shitty
+    // Alternatives:
+    // consistent indices: count on topics not to change, indices correspond to
+
+    console.log('da props')
+    console.log(this.props)
+    var topicNum = this.props.topics.length;
+    var activeTopics = [];
+    var topic_list = [];
+    for (i=0; i<topicNum; i++) {
+      activeTopics.push(false);
+      topic_list.push(this.props.topics[i].id)
+    }
+    console.log(activeTopics)
+    console.log(topic_list)
     var activeSelect = false;
     var start = 0;
     var end = 0;
@@ -118,6 +133,8 @@ const Highlight = React.createClass({
       var list_index = 0;
       while (list_index < activeTopics.length) {
         if (activeTopics[list_index]) {
+          console.log('active topic')
+          console.log(list_index)
           processed.topics.push(topic_list[list_index]);
         }
         list_index += 1;
@@ -126,27 +143,12 @@ const Highlight = React.createClass({
 
       // (5) Activate/Deactivate Topics
       var active_state = i.type === 'start'
-      if (i.topic === '1') {
-        activeTopics[0] = active_state;
-      } else if (i.topic === '2') {
-        activeTopics[1] = active_state;
-      } else if (i.topic === '3') {
-        activeTopics[2] = active_state;
-      } else if (i.topic === '4') {
-        activeTopics[3] = active_state;
-      } else if (i.topic === '5') {
-        activeTopics[4] = active_state;
-      } else if (i.topic === '6') {
-        activeTopics[5] = active_state;
-      } else if (i.topic === '7') {
-        activeTopics[6] = active_state;
-      } else if (i.topic === '8') {
-        activeTopics[7] = active_state;
-      } else if (i.topic === '9') {
-        activeTopics[8] = active_state;
-      } else if (i.topic === '10') {
-        activeTopics[9] = active_state;
+      for(index=0;index<activeTopics.length;index+=1) {
+        if (i.topic == topic_list[index]) {
+          activeTopics[index] = active_state
+        }
       }
+
 
       // (6) Activate/Deactivate Sources
       if (active_state){
@@ -177,50 +179,23 @@ const Highlight = React.createClass({
   Range: String RGB
 
   From list of topics, gathers
-  */
-  /*
+
   Take topics, find the number, generate that many colors
   */
   mergeColors: function(topics, selected) {
-    console.log('Merge Colors');
+    console.log('mergeColors');
     var list = [];
     var index = 0;
-    //Need to adapt code so that more topics can be dynamically added
-    while (index < topics.length) {
-      switch (topics[index]) {
-        case ('topic1'):
-          list.push('rgb(241, 96, 97)');
-          break;
-        case ('topic2'):
-          list.push('rgb(253, 212, 132)');
-          break;
-        case ('topic3'):
-          list.push('rgb(175, 215, 146)');
-          break;
-        case ('topic4'):
-          list.push('rgb(168, 210, 191)');
-          break;
-        case ('topic5'): //orange
-          list.push('rgb(255,153,000)');
-          break;
-        case ('topic6'): //purple
-          list.push('rgb(102,000,153)');
-          break;
-        case ('topic7'): //teal
-          list.push('rgb(000,153,153)');
-          break;
-        case ('topic8'): //pink
-          list.push('rgb(255,102,255)');
-          break;
-        case ('topic9'): //dark blue
-          list.push('rgb(000,051,153)');
-          break;
-        case ('topic10'): //magenta
-          list.push('rgb(153,000,204)');
-          break;
+    console.log(topics)
+    var colors = this.props.colors;
+    console.log(this.props.topics)
+    for (var current=0;current<topics.length;current+=1) {
+      for (var master=0;master<this.props.topics.length;master+=1){
+        if (topics[current] == this.props.topics[master].id) {
+          list.push(this.props.colors[master])
+        }
       }
-      index = index + 1;
-    }
+
     var fraction = 1 / list.length;
     var red = 0;
     var blue = 0;
@@ -244,24 +219,34 @@ const Highlight = React.createClass({
   },
 
   getOffset: function(childNodes, targetNode) {
-    console.log('Offset');
+    console.log('getOffset');
     var offset = 0;
+    //console.log(childNodes) //spans
+    //.log(targetNode) //new (?)
+
     for (var i in childNodes) {
       var childNode = childNodes[i];
       if (childNode === targetNode) {
         break;
       } else {
-        offset += childNode.textContent.length;
+        //console.log('text content')
+        //console.log(childNode.textContent)
+        if (childNode.textContent == null) {
+          break;
+        } else {
+          offset += childNode.textContent.length;
+        }
       }
     }
     return offset;
   },
 
   handleClick: function() {
-    console.log('HandleClick');
-    this.props.deselectHighlight();
+    console.log('handleClick');
     //document.addEventListener('onclick',this.handleDeselect(event));
     var currentTopic = this.props.currentTopic;
+    console.log('current topic')
+    console.log(currentTopic)
     var selectionObj = window.getSelection();
     if (selectionObj) {
       let selectedText = selectionObj.toString();
@@ -279,10 +264,14 @@ const Highlight = React.createClass({
         end = tmp;
       }
       if (start !== end) {
-        this.props.addHighlight(start, end, selectedText, currentTopic)
-        this.props.selectHighlight([{'start':start, 'end':end, 'text':selectedText, 'topic':currentTopic }])
+        this.props.deselectHighlight();
+        this.props.addHighlight(start, end, selectedText, currentTopic);
+        this.props.selectHighlight([{'start':start, 'end':end, 'text':selectedText, 'topic':currentTopic }]);
       }
     }
+    //removes selection after creating highlight
+    window.getSelection().removeAllRanges();
+    //window.selection.clear();
   },
 
   componentDidMount: function() {
@@ -307,7 +296,7 @@ const Highlight = React.createClass({
   handleSelect: function(source, e, event) {
     console.log('HandleSelect');
     this.props.selectHighlight(source);
-    event.stopPropagation();
+    //event.stopPropagation();
   },
 
   //Context-Menu code
@@ -328,20 +317,15 @@ const Highlight = React.createClass({
     }
     return (
       <div onkeydown={this.handleKeyDown} ref={(ref) => this.articleRef = ref } onClick={this.handleClick}>
-        {Array(highlights.length * 2).fill().map((_,i) => {
-          var curHL = highlights[i / 2 | 0];
-          if (i % 2 === 0) {
-            // render normal text
-            return (<span key={i}>{text.substring(start, curHL.start)}</span>);
-          } else {
-            // render highlight
-            start = curHL.end;
-            return (<span key={i}
-                          source = {curHL.source}
-                          onClick={this.handleSelect.bind(this, curHL.source, event)}
-                          style={{backgroundColor: this.mergeColors(curHL.topics, curHL.selected)}}
-                    >{text.substring(curHL.start, curHL.end)}</span>);
-          }
+        {Array(highlights.length).fill().map((_,i) => {
+          var curHL = highlights[i];
+          start = curHL.end;
+          return (<span key={i}
+                        source = {curHL.source}
+                        onClick={this.handleSelect.bind(this, curHL.source,event)}
+                        style={{backgroundColor: this.mergeColors(curHL.topics, curHL.selected)}}
+                  >{text.substring(curHL.start, curHL.end)}</span>);
+        ç
         })}
         { tail }
       </div>
@@ -353,4 +337,33 @@ const Highlight = React.createClass({
 export default connect(
   mapStateToProps,
   dispatch => bindActionCreators(assembledActionCreators, dispatch)
-)(Highlight);
+)(HighlightModule);
+
+
+
+/*
+<div onkeydown={this.handleKeyDown} ref={(ref) => this.articleRef = ref } onClick={this.handleClick}>
+  {Array(highlights.length * 2).fill().map((_,i) => {
+    var curHL = highlights[i / 2 | 0];
+    if (i % 2 === 0) {
+      // render normal text
+      return (<span key={i}>{text.substring(start, curHL.start)}</span>);
+    } else {
+      // render highlight
+      start = curHL.end;
+      return (<span key={i}
+                    source = {curHL.source}
+                    onClick={this.handleSelect.bind(this, curHL.source,event)}
+                    style={{backgroundColor: this.mergeColors(curHL.topics, curHL.selected)}}
+              >{text.substring(curHL.start, curHL.end)}</span>);
+    }
+  })}
+  { tail }
+</div>
+
+
+
+
+
+
+*/
