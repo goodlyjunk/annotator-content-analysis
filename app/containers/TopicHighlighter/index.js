@@ -51,14 +51,6 @@ export class TopicHighlighter extends Component {
     let article = this.props.articles[cur_article];
     let topics = this.props.topics[cur_article];
 
-    /*console.log('topics')
-    console.log(topics)
-    console.log('this.props')
-    console.log(this.props.topics)
-    console.log('...this')
-    console.log(...this.props)
-    console.log('...')
-    */
     return (
       <ReactCSSTransitionsGroup transitionName='fadein'
                                 transitionAppear

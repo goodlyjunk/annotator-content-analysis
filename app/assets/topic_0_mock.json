@@ -92,6 +92,24 @@
 
       },
       "instructions": ""
+    },
+    {
+      "id": 24,
+      "name": "Tactics",
+      "order": null,
+      "glossary": {
+
+      },
+      "instructions": ""
+    },
+    {
+      "id": 27,
+      "name": "Escalation",
+      "order": null,
+      "glossary": {
+
+      },
+      "instructions": ""
     }
   ]
 }

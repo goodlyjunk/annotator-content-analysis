@@ -119,6 +119,16 @@ $topic-picker-nav-width: 42%;
         background-color: $magenta_accent;
       }
     }
+    li:nth-child(11) {
+      &:hover, &.active {
+        background-color: $lightgreen_accent;
+      }
+    }
+    li:nth-child(12) {
+      &:hover, &.active {
+        background-color: $lightblue_accent;
+      }
+    }
   }
 
   &--left {
