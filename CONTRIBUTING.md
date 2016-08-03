@@ -14,7 +14,11 @@ When `App` from `app.js` was loaded in `index.js`, it called `configureStore` fr
 
 The backend code is briefly summarized below:
 
-**[overview of how the backend code functions]**.
+First of all, raw data is loaded to the database by executing `load_data.py` (as what you can see in `README`). Sample raw data is located in `data/sample/schema/` and `data/sample/article/`. The schema is basically some questions (and child questions) related to an article. `load_data.py` will call data parsers in these files: `parse_schema.py`, `data/parse_schema.py` and `data/parse_document.py`. The two parser functions (i.e. `parse_schema()` and `parse_document()`)in `data/` parses specific articles and schemas related to that article. The parser in `parse_schema.py` (note that it's the one in the root folder!) is an object called `TopicsSchemaParser`, and it loads specific topics and schemas related to the article to our data models in `thresher/models.py`. 
+
+The backend features a RESTful API and you can view it via browser. `thresher/urls.py` provides endpoints for you to access. `thresher/views.py` provides functions and models that defines how you view data via browser. `thresher/views.py` will call serializers in `thresher/serializer.py` to output data stored in models in an organized way.
+
+`thresher_backend/` contains management files for this django project. `docker-compose.yml`, `Dockerfile`, `init_docker.sh` and `reset_db.sh` are for running the backend locally with Docker.
 
 #The frontend stack
 
@@ -62,11 +66,35 @@ It produces similar results to Grunt and Gulp, but you don't need to write as mu
 
 #The backend stack
 
-* **[List the backend parts when merged]**
+* Django REST Framework
+* PostgreSQL
+* Docker
 
-###What's [backend]? **[Place backend information here when merged]**
+###What's Django REST Framework? 
 
-**[misc information]**
+Django REST framework is a powerful and flexible toolkit for building Web APIs.
+
+Some reasons you might want to use REST framework:
+
+1. The Web browsable API is a huge usability win for your developers.
+2. Authentication policies including optional packages for OAuth1a and OAuth2.
+3. Serialization that supports both ORM and non-ORM data sources.
+4. Customizable all the way down - just use regular function-based views if you don't need the more powerful features.
+5. Extensive documentation, and great community support.
+
+And here's a brief intro to Django:
+
+Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design. Built by experienced developers, it takes care of much of the hassle of Web development, so you can focus on writing your app without needing to reinvent the wheel. It’s free and open source.
+
+###What's PostgreSQL?
+
+PostgreSQL is a powerful, open source object-relational database system. It has more than 15 years of active development and a proven architecture that has earned it a strong reputation for reliability, data integrity, and correctness. It runs on all major operating systems, including Linux, UNIX (AIX, BSD, HP-UX, SGI IRIX, Mac OS X, Solaris, Tru64), and Windows. It is fully ACID compliant, has full support for foreign keys, joins, views, triggers, and stored procedures (in multiple languages). It includes most SQL:2008 data types, including INTEGER, NUMERIC, BOOLEAN, CHAR, VARCHAR, DATE, INTERVAL, and TIMESTAMP. It also supports storage of binary large objects, including pictures, sounds, or video. It has native programming interfaces for C/C++, Java, .Net, Perl, Python, Ruby, Tcl, ODBC, among others, and exceptional documentation.
+
+###What's Docker?
+
+Docker is an open-source project that automates the deployment of applications inside software containers.
+
+Docker containers wrap up a piece of software in a complete filesystem that contains everything it needs to run: code, runtime, system tools, system libraries – anything you can install on a server. This guarantees that it will always run the same, regardless of the environment it is running in.
 
 #What's ____?
 
