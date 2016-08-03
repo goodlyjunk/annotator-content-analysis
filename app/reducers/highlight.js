@@ -48,8 +48,6 @@ export function highlight(state = initialState, action) {
                            { highlights: mergeHighlights(newHighlights) });
     case 'SELECT_HIGHLIGHT':
     console.log('SELECT_HIGHLIGHT');
-      /*Add start-end indices of clicked span to selectedHighlights
-      The indices are used in render to 'select' and darken the span*/
       var select = action.highlights;
       console.log(action.highlights)
       var indices = [];
@@ -63,8 +61,6 @@ export function highlight(state = initialState, action) {
       return Object.assign({}, state, { selectedHighlight: indices });
     case 'DELETE_HIGHLIGHT':
     console.log('DELETE_HIGHLIGHT');
-      /*Remove selected highlights in state.highlights using the
-      indices from selectedHighlights. Also reset selectedHighlights*/
       var new_state = [];
       var indices = [];
       var stateindex = 0;

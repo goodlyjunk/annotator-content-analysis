@@ -103,7 +103,6 @@ const HighlightModule = React.createClass({
       if (selectedHighlights.length) {
         var select_index = 0;
         while (select_index < selectedHighlights.length) {
-
           var selected_high = selectedHighlights[select_index]
           //Case for Single Highlight
           if ((selected_high[0] == processed.start) && (selected_high[1] == processed.end)) {
@@ -181,7 +180,6 @@ const HighlightModule = React.createClass({
         }
       }
     }
-
     var fraction = 1 / list.length;
     var red = 0;
     var blue = 0;
@@ -207,16 +205,11 @@ const HighlightModule = React.createClass({
   getOffset: function(childNodes, targetNode) {
     console.log('getOffset');
     var offset = 0;
-    //console.log(childNodes) //spans
-    //.log(targetNode) //new (?)
-
     for (var i in childNodes) {
       var childNode = childNodes[i];
       if (childNode === targetNode) {
         break;
       } else {
-        //console.log('text content')
-        //console.log(childNode.textContent)
         if (childNode.textContent == null) {
           break;
         } else {
@@ -230,7 +223,6 @@ const HighlightModule = React.createClass({
   handleClick: function() {
     console.log('handleClick');
     var currentTopic = this.props.currentTopic.slice();
-    console.log('current topic')
     var selectionObj = window.getSelection();
     if (selectionObj) {
       let selectedText = selectionObj.toString();
@@ -255,7 +247,6 @@ const HighlightModule = React.createClass({
     }
     //removes selection after creating highlight
     window.getSelection().removeAllRanges();
-    //window.selection.clear();
   },
 
   componentDidMount: function() {
@@ -280,7 +271,6 @@ const HighlightModule = React.createClass({
   contextMenu: function() {
     console.log('contextMenu')
   },
-
 
   handleSelect: function(source) {
     console.log('HandleSelect');
