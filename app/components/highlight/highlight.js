@@ -284,18 +284,6 @@ const HighlightModule = React.createClass({
 
   handleSelect: function(source) {
     console.log('HandleSelect');
-    /*console.log(source)
-    for (var i=0; i < source.length; i++) {
-      console.log(source[i])
-      console.log(source[i].top)
-      console.log(this.props.currentTopic)
-      if (source[i].top != this.props.currentTopic.toString()) {
-        console.log('change color')
-        source[i].top = this.props.currentTopic.toString();
-      }
-    }
-    console.log('source 2')
-    console.log(source)*/
     this.props.selectHighlight(source);
     //event.stopPropagation();
   },
