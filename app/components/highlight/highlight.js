@@ -252,7 +252,7 @@ const HighlightModule = React.createClass({
   componentDidMount: function() {
     console.log('Did Mount');
     document.addEventListener('keydown',this.handleKeyDown);
-    document.addEventListener('contextmenu', this.contextMenu);
+    //document.addEventListener('contextmenu', this.contextMenu);
     let HighlightContainer = document.getElementById('highlight');
   },
 
@@ -268,9 +268,11 @@ const HighlightModule = React.createClass({
     }
   },
 
+  /*
   contextMenu: function() {
     console.log('contextMenu')
   },
+  */
 
   handleSelect: function(source) {
     console.log('HandleSelect');
