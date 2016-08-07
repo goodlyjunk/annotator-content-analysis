@@ -23,7 +23,7 @@ const TopicPicker = React.createClass({
 
   propTypes: {
     topics: React.PropTypes.array.isRequired,
-    topicsTmp: React.PropTypes.array.isRequired,
+    //topicsTmp: React.PropTypes.array.isRequired,
     onActivateTopic: React.PropTypes.func
   },
 
@@ -37,7 +37,30 @@ const TopicPicker = React.createClass({
     };
   },
 
-  getDefaultProps() {
+  render() {
+    let topics = this.props.topics;
+
+    return (
+      <div className='topic-picker topic-picker--left topic-picker--open'>
+        <div className="topic-picker__header">
+          Click a topic name to change highlighter color
+        </div>
+        <ul className='topic-picker__nav'>
+          { topics.map(topic => {
+            return (
+              <li onClick={this.activateTopic.bind(this, topic.id, this.props)} key={topic.id}>
+                <b>{topic.name}</b>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
+
+});
+
+  /*getDefaultProps() {
     return {
       // TODO: we're getting topics in props, but it's structure looks outdated
       // in any case it needs to be removed or refactored as topic data
@@ -51,9 +74,9 @@ const TopicPicker = React.createClass({
         { id: '4', name: 'Topic 4', description: '' }
       ]
     };
-  },
+  },*/
 
-  componentDidMount() {
+  /*componentDidMount() {
     // TODO: once everything is react-ified we shouldn't need jquery
     // though this is arguably much less boilerplate code than react
     var $ = jquery;
@@ -124,7 +147,9 @@ const TopicPicker = React.createClass({
     );
   }
 
-});
+});*/
+
+
 
 export default connect(
   mapStateToProps,
